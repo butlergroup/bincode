@@ -4,11 +4,11 @@ version = "2.0.1" # remember to update bincode
 authors = [
     "Zoey Riordan <zoey@dos.cafe>",
     "Victor Koenders <bincode@trangar.com>",
+    "Chris Butler <chris.butler@butlergroup.net>",
 ]
-edition = "2021"
-rust-version = "1.85.0"
+edition = "2024"
 
-repository = "https://github.com/bincode-org/bincode"
+repository = "https://github.com/butlergroup/bincode"
 documentation = "https://docs.rs/bincode_derive"
 readme = "./readme.md"
 categories = ["encoding", "network-programming"]
@@ -20,4 +20,4 @@ description = "Implementation of #[derive(Encode, Decode)] for bincode"
 proc-macro = true
 
 [dependencies]
-virtue = "0.0.18"
+virtue = "0.0.19"

@@ -19,7 +19,7 @@
             },
           "steps":
             [
-              { "uses": "actions/checkout@v4", "name": "Checkout" },
+              { "uses": "actions/checkout@v6", "name": "Checkout" },
               {
                 "uses": "actions-rs/toolchain@v1",
                 "with":
@@ -75,7 +75,7 @@
           "runs-on": "${{ matrix.runner }}",
           "steps":
             [
-              { "uses": "actions/checkout@v4", "name": "Checkout" },
+              { "uses": "actions/checkout@v6", "name": "Checkout" },
               {
                 "uses": "actions-rs/toolchain@v1",
                 "with":
@@ -100,7 +100,7 @@
           "runs-on": "ubuntu-latest",
           "steps":
             [
-              { "uses": "actions/checkout@v4", "name": "Checkout" },
+              { "uses": "actions/checkout@v6", "name": "Checkout" },
               {
                 "uses": "actions-rs/toolchain@v1",
                 "with":
@@ -134,7 +134,7 @@
           "runs-on": "ubuntu-latest",
           "steps":
             [
-              { "uses": "actions/checkout@v4", "name": "Checkout" },
+              { "uses": "actions/checkout@v6", "name": "Checkout" },
               {
                 "uses": "actions-rs/toolchain@v1",
                 "with":

@@ -14,7 +14,7 @@ exclude = ["logo.svg", "examples/*", ".gitignore", ".github/"]
 
 publish = true
 
-repository = "https://github.com/bincode-org/bincode"
+repository = "https://github.com/butlergroup/bincode"
 documentation = "https://docs.rs/bincode"
 readme = "./readme.md"
 categories = ["encoding", "network-programming"]
