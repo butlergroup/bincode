@@ -3,8 +3,8 @@
   "permissions": { contents: read },
   "on":
     {
-      "push": { "branches": ["trunk", "v*.x", "ci/*"] },
-      "pull_request": { "branches": ["trunk", "v*.x"] },
+      "push": { "branches": ["main", "v*.x", "ci/*"] },
+      "pull_request": { "branches": ["main", "v*.x"] },
     },
   "jobs": {
       "test_cross_std":
