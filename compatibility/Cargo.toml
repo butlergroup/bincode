@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 bincode_2 = { path = "..", package = "bincode", features = ["serde"] }
 bincode_1 = { version = "1", package = "bincode" }
-serde = { version = "1.0.228", features = ["derive"] }
-rand = "0.9.2"
+serde = { version = "1", features = ["derive"] }
+rand = "0.8"

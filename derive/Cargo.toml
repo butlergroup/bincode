@@ -6,7 +6,8 @@ authors = [
     "Victor Koenders <bincode@trangar.com>",
     "Chris Butler <chris.butler@butlergroup.net>",
 ]
-edition = "2024"
+edition = "2021"
+rust-version = "1.85.0"
 
 repository = "https://github.com/butlergroup/bincode"
 documentation = "https://docs.rs/bincode_derive"
@@ -20,4 +21,4 @@ description = "Implementation of #[derive(Encode, Decode)] for bincode"
 proc-macro = true
 
 [dependencies]
-virtue = "0.0.19"
+virtue = "0.0.18"
