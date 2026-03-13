@@ -101,8 +101,8 @@ impl DeriveStruct {
                     ok_group.group(Delimiter::Brace, |struct_body| {
                         // Fields
                         // {
-                        //      a: bincode::Decode::decode(decoder)?,
-                        //      b: bincode::Decode::decode(decoder)?,
+                        //      a: bincode_reloaded::Decode::decode(decoder)?,
+                        //      b: bincode_reloaded::Decode::decode(decoder)?,
                         //      ...
                         // }
                         if let Some(fields) = self.fields.as_ref() {

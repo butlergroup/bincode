@@ -14,14 +14,14 @@
                 "id": "build",
                 "uses": "google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master",
                 "with":
-                  { "oss-fuzz-project-name": "bincode", "language": "rust" },
+                  { "oss-fuzz-project-name": "bincode_reloaded", "language": "rust" },
               },
               {
                 "name": "Run Fuzzers",
                 "uses": "google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master",
                 "with":
                   {
-                    "oss-fuzz-project-name": "bincode",
+                    "oss-fuzz-project-name": "bincode_reloaded",
                     "fuzz-seconds": 300,
                     "language": "rust",
                   },

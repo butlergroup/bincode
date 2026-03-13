@@ -1,7 +1,7 @@
 #![cfg(feature = "derive")]
 #![allow(dead_code)]
 
-use bincode::{Decode, Encode};
+use bincode_reloaded::{Decode, Encode};
 
 #[derive(Encode, Decode, Clone)]
 pub struct A;

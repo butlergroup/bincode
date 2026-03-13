@@ -1,6 +1,6 @@
 #![cfg(all(feature = "alloc", feature = "derive"))]
 
-use bincode::{
+use bincode_reloaded::{
     config, de::BorrowDecoder, decode_from_slice, decode_from_slice_with_context, encode_to_vec,
     error::DecodeError, BorrowDecode, Decode, Encode,
 };
@@ -10,18 +10,18 @@ use bumpalo::{collections::Vec, vec, Bump};
 struct CodableVec<'bump, T: 'bump>(Vec<'bump, T>);
 
 impl<'bump, T: Encode> Encode for CodableVec<'bump, T> {
-    fn encode<E: bincode::enc::Encoder>(
+    fn encode<E: bincode_reloaded::enc::Encoder>(
         &self,
         encoder: &mut E,
-    ) -> Result<(), bincode::error::EncodeError> {
+    ) -> Result<(), bincode_reloaded::error::EncodeError> {
         self.0.as_slice().encode(encoder)
     }
 }
 
 impl<'bump, T: Decode<&'bump Bump>> Decode<&'bump Bump> for CodableVec<'bump, T> {
-    fn decode<D: bincode::de::Decoder<Context = &'bump Bump>>(
+    fn decode<D: bincode_reloaded::de::Decoder<Context = &'bump Bump>>(
         decoder: &mut D,
-    ) -> Result<Self, bincode::error::DecodeError> {
+    ) -> Result<Self, bincode_reloaded::error::DecodeError> {
         let len = u64::decode(decoder)?;
         let len = usize::try_from(len).map_err(|_| DecodeError::OutsideUsizeRange(len))?;
         decoder.claim_container_read::<T>(len)?;
@@ -57,13 +57,13 @@ impl<'de, 'bump, T: BorrowDecode<'de, &'bump Bump>> BorrowDecode<'de, &'bump Bum
 }
 
 #[derive(Encode, Decode, PartialEq, Eq, Debug)]
-#[bincode(decode_context = "&'bump Bump")]
+#[bincode_reloaded(decode_context = "&'bump Bump")]
 struct Container<'bump> {
     vec: CodableVec<'bump, u32>,
 }
 
 #[derive(Encode, Decode, PartialEq, Eq, Debug)]
-#[bincode(decode_context = "&'bump Bump")]
+#[bincode_reloaded(decode_context = "&'bump Bump")]
 enum _EnumContainer<'bump> {
     Vec(CodableVec<'bump, u32>),
 }
@@ -77,7 +77,7 @@ struct SelfReferencing {
 }
 
 impl<Context> Decode<Context> for SelfReferencing {
-    fn decode<D: bincode::de::Decoder<Context = Context>>(
+    fn decode<D: bincode_reloaded::de::Decoder<Context = Context>>(
         decoder: &mut D,
     ) -> Result<Self, DecodeError> {
         SelfReferencing::try_new(Bump::new(), |bump| {

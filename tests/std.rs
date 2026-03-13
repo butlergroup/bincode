@@ -3,7 +3,7 @@
 
 mod utils;
 
-use bincode::error::DecodeError;
+use bincode_reloaded::error::DecodeError;
 use std::{
     ffi::CString,
     io::{Cursor, Seek, SeekFrom},
@@ -20,24 +20,24 @@ struct Foo {
     pub b: u32,
 }
 
-impl bincode::Encode for Foo {
-    fn encode<E: bincode::enc::Encoder>(
+impl bincode_reloaded::Encode for Foo {
+    fn encode<E: bincode_reloaded::enc::Encoder>(
         &self,
         encoder: &mut E,
-    ) -> Result<(), bincode::error::EncodeError> {
+    ) -> Result<(), bincode_reloaded::error::EncodeError> {
         self.a.encode(encoder)?;
         self.b.encode(encoder)?;
         Ok(())
     }
 }
 
-impl<Context> bincode::Decode<Context> for Foo {
-    fn decode<D: bincode::de::Decoder>(
+impl<Context> bincode_reloaded::Decode<Context> for Foo {
+    fn decode<D: bincode_reloaded::de::Decoder>(
         decoder: &mut D,
-    ) -> Result<Self, bincode::error::DecodeError> {
+    ) -> Result<Self, bincode_reloaded::error::DecodeError> {
         Ok(Self {
-            a: bincode::Decode::decode(decoder)?,
-            b: bincode::Decode::decode(decoder)?,
+            a: bincode_reloaded::Decode::decode(decoder)?,
+            b: bincode_reloaded::Decode::decode(decoder)?,
         })
     }
 }
@@ -45,7 +45,7 @@ impl<Context> bincode::Decode<Context> for Foo {
 #[test]
 fn test_std_cursor() {
     let mut cursor = Cursor::<&[u8]>::new(&[5, 10]);
-    let foo: Foo = bincode::decode_from_std_read(&mut cursor, bincode::config::standard()).unwrap();
+    let foo: Foo = bincode_reloaded::decode_from_std_read(&mut cursor, bincode_reloaded::config::standard()).unwrap();
 
     assert_eq!(foo.a, 5);
     assert_eq!(foo.b, 10);
@@ -56,16 +56,16 @@ fn test_std_cursor() {
 fn test_std_file() {
     let mut file = tempfile::tempfile().expect("Could not create temp file");
 
-    let bytes_written = bincode::encode_into_std_write(
+    let bytes_written = bincode_reloaded::encode_into_std_write(
         Foo { a: 30, b: 50 },
         &mut file,
-        bincode::config::standard(),
+        bincode_reloaded::config::standard(),
     )
     .unwrap();
     assert_eq!(bytes_written, 2);
     file.seek(SeekFrom::Start(0)).unwrap();
 
-    let foo: Foo = bincode::decode_from_std_read(&mut file, bincode::config::standard()).unwrap();
+    let foo: Foo = bincode_reloaded::decode_from_std_read(&mut file, bincode_reloaded::config::standard()).unwrap();
 
     assert_eq!(foo.a, 30);
     assert_eq!(foo.b, 50);
@@ -124,22 +124,22 @@ fn test_std_commons() {
     the_same(custom_set);
 
     // Borrowed values
-    let config = bincode::config::standard();
+    let config = bincode_reloaded::config::standard();
     let mut buffer = [0u8; 1024];
 
     // &CStr
     let cstr = c"Hello world";
-    let len = bincode::encode_into_slice(cstr, &mut buffer, config).unwrap();
+    let len = bincode_reloaded::encode_into_slice(cstr, &mut buffer, config).unwrap();
     let (decoded, len): (CString, usize) =
-        bincode::decode_from_slice(&buffer[..len], config).unwrap();
+        bincode_reloaded::decode_from_slice(&buffer[..len], config).unwrap();
     assert_eq!(cstr, decoded.as_c_str());
     assert_eq!(len, 12);
 
     // Path
     let path = Path::new("C:/Program Files/Foo");
-    let len = bincode::encode_into_slice(path, &mut buffer, config).unwrap();
+    let len = bincode_reloaded::encode_into_slice(path, &mut buffer, config).unwrap();
     let (decoded, len): (&Path, usize) =
-        bincode::borrow_decode_from_slice(&buffer[..len], config).unwrap();
+        bincode_reloaded::borrow_decode_from_slice(&buffer[..len], config).unwrap();
     assert_eq!(path, decoded);
     assert_eq!(len, 21);
 }
@@ -149,7 +149,7 @@ fn test_system_time_out_of_range() {
     let input = [0xfd, 0x90, 0x0c, 0xfd, 0xfd, 0x90, 0x0c, 0xfd, 0x90, 0x90];
 
     let result: Result<(std::time::SystemTime, usize), _> =
-        bincode::decode_from_slice(&input, bincode::config::standard());
+        bincode_reloaded::decode_from_slice(&input, bincode_reloaded::config::standard());
 
     match result {
         Ok(_) => panic!("Expected the decode to fail, but it succeeded"),
@@ -183,20 +183,20 @@ impl std::hash::Hasher for ExampleCustomHasher {
 
 #[test]
 fn test_decode_borrow_str_in_array() {
-    let (strs, _): (Vec<&str>, usize) = bincode::borrow_decode_from_slice(
+    let (strs, _): (Vec<&str>, usize) = bincode_reloaded::borrow_decode_from_slice(
         &[
             3, 3, b'a', b'b', b'c', 3, b'd', b'e', b'f', 3, b'g', b'h', b'i',
         ],
-        bincode::config::standard(),
+        bincode_reloaded::config::standard(),
     )
     .unwrap();
     assert_eq!(strs, vec!["abc", "def", "ghi"]);
 
-    let (strs, _): ([&str; 3], usize) = bincode::borrow_decode_from_slice(
+    let (strs, _): ([&str; 3], usize) = bincode_reloaded::borrow_decode_from_slice(
         &[
             3, b'a', b'b', b'c', 3, b'd', b'e', b'f', 3, b'g', b'h', b'i',
         ],
-        bincode::config::standard(),
+        bincode_reloaded::config::standard(),
     )
     .unwrap();
     assert_eq!(strs, ["abc", "def", "ghi"]);

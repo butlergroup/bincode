@@ -1,7 +1,7 @@
 #![cfg(all(feature = "derive", feature = "std"))]
 #![allow(dead_code)]
 
-use bincode::{Decode, Encode};
+use bincode_reloaded::{Decode, Encode};
 
 #[derive(Encode, Decode)]
 struct Foo<Bar = ()> {

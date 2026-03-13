@@ -1,11 +1,11 @@
-//! The config module is used to change the behavior of bincode's encoding and decoding logic.
+//! The config module is used to change the behavior of bincode_reloaded's encoding and decoding logic.
 //!
-//! *Important* make sure you use the same config for encoding and decoding, or else bincode will not work properly.
+//! *Important* make sure you use the same config for encoding and decoding, or else bincode_reloaded will not work properly.
 //!
-//! To use a config, first create a type of [Configuration]. This type will implement trait [Config] for use with bincode.
+//! To use a config, first create a type of [Configuration]. This type will implement trait [Config] for use with bincode_reloaded.
 //!
 //! ```
-//! let config = bincode::config::standard()
+//! let config = bincode_reloaded::config::standard()
 //!     // pick one of:
 //!     .with_big_endian()
 //!     .with_little_endian()
@@ -19,7 +19,7 @@
 pub(crate) use self::internal::*;
 use core::marker::PhantomData;
 
-/// The Configuration struct is used to build bincode configurations. The [Config] trait is implemented
+/// The Configuration struct is used to build bincode_reloaded configurations. The [Config] trait is implemented
 /// by this struct when a valid configuration has been constructed.
 ///
 /// The following methods are mutually exclusive and will overwrite each other. The last call to one of these methods determines the behavior of the configuration:
@@ -49,14 +49,14 @@ pub struct Configuration<E = LittleEndian, I = Varint, L = NoLimit> {
 // - Add this generic to _every_ function in `Configuration`
 // - Add your new methods
 
-/// The default config for bincode 2.0. By default this will be:
+/// The default config for bincode_reloaded 2.0. By default this will be:
 /// - Little endian
 /// - Variable int encoding
 pub const fn standard() -> Configuration {
     generate()
 }
 
-/// Creates the "legacy" default config. This is the default config that was present in bincode 1.0
+/// Creates the "legacy" default config. This is the default config that was present in bincode_reloaded 1.0
 /// - Little endian
 /// - Fixed int length encoding
 pub const fn legacy() -> Configuration<LittleEndian, Fixint, NoLimit> {
@@ -78,17 +78,17 @@ const fn generate<E, I, L>() -> Configuration<E, I, L> {
 }
 
 impl<E, I, L> Configuration<E, I, L> {
-    /// Makes bincode encode all integer types in big endian.
+    /// Makes bincode_reloaded encode all integer types in big endian.
     pub const fn with_big_endian(self) -> Configuration<BigEndian, I, L> {
         generate()
     }
 
-    /// Makes bincode encode all integer types in little endian.
+    /// Makes bincode_reloaded encode all integer types in little endian.
     pub const fn with_little_endian(self) -> Configuration<LittleEndian, I, L> {
         generate()
     }
 
-    /// Makes bincode encode all integer types with a variable integer encoding.
+    /// Makes bincode_reloaded encode all integer types with a variable integer encoding.
     ///
     /// Encoding an unsigned integer v (of any type excepting u8) works as follows:
     ///
@@ -168,7 +168,7 @@ impl<E, I, L> Configuration<E, I, L> {
     }
 }
 
-/// Indicates a type is valid for controlling the bincode configuration
+/// Indicates a type is valid for controlling the bincode_reloaded configuration
 pub trait Config:
     InternalEndianConfig + InternalIntEncodingConfig + InternalLimitConfig + Copy + Clone
 {

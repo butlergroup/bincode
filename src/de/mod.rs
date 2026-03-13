@@ -27,11 +27,11 @@ pub use self::decoder::DecoderImpl;
 ///
 /// Whenever you derive `Decode` for your type, the base trait `BorrowDecode` is automatically implemented.
 ///
-/// This trait will be automatically implemented with unbounded `Context` if you enable the `derive` feature and add `#[derive(bincode::Decode)]` to your type. Note that if the type contains any lifetimes, `BorrowDecode` will be implemented instead.
+/// This trait will be automatically implemented with unbounded `Context` if you enable the `derive` feature and add `#[derive(bincode_reloaded::Decode)]` to your type. Note that if the type contains any lifetimes, `BorrowDecode` will be implemented instead.
 ///
 /// # Implementing this trait manually
 ///
-/// If you want to implement this trait for your type, the easiest way is to add a `#[derive(bincode::Decode)]`, build and check your `target/generated/bincode/` folder. This should generate a `<Struct name>_Decode.rs` file.
+/// If you want to implement this trait for your type, the easiest way is to add a `#[derive(bincode_reloaded::Decode)]`, build and check your `target/generated/bincode_reloaded/` folder. This should generate a `<Struct name>_Decode.rs` file.
 ///
 /// For this struct:
 ///
@@ -49,23 +49,23 @@ pub use self::decoder::DecoderImpl;
 /// #     pub x: f32,
 /// #     pub y: f32,
 /// # }
-/// impl<Context> bincode::Decode<Context> for Entity {
-///     fn decode<D: bincode::de::Decoder<Context = Context>>(
+/// impl<Context> bincode_reloaded::Decode<Context> for Entity {
+///     fn decode<D: bincode_reloaded::de::Decoder<Context = Context>>(
 ///         decoder: &mut D,
-///     ) -> core::result::Result<Self, bincode::error::DecodeError> {
+///     ) -> core::result::Result<Self, bincode_reloaded::error::DecodeError> {
 ///         Ok(Self {
-///             x: bincode::Decode::decode(decoder)?,
-///             y: bincode::Decode::decode(decoder)?,
+///             x: bincode_reloaded::Decode::decode(decoder)?,
+///             y: bincode_reloaded::Decode::decode(decoder)?,
 ///         })
 ///     }
 /// }
-/// impl<'de, Context> bincode::BorrowDecode<'de, Context> for Entity {
-///     fn borrow_decode<D: bincode::de::BorrowDecoder<'de, Context = Context>>(
+/// impl<'de, Context> bincode_reloaded::BorrowDecode<'de, Context> for Entity {
+///     fn borrow_decode<D: bincode_reloaded::de::BorrowDecoder<'de, Context = Context>>(
 ///         decoder: &mut D,
-///     ) -> core::result::Result<Self, bincode::error::DecodeError> {
+///     ) -> core::result::Result<Self, bincode_reloaded::error::DecodeError> {
 ///         Ok(Self {
-///             x: bincode::BorrowDecode::borrow_decode(decoder)?,
-///             y: bincode::BorrowDecode::borrow_decode(decoder)?,
+///             x: bincode_reloaded::BorrowDecode::borrow_decode(decoder)?,
+///             y: bincode_reloaded::BorrowDecode::borrow_decode(decoder)?,
 ///         })
 ///     }
 /// }
@@ -76,25 +76,25 @@ pub use self::decoder::DecoderImpl;
 /// To get specific integer types, you can use:
 /// ```
 /// # struct Foo;
-/// # impl<Context> bincode::Decode<Context> for Foo {
-/// #     fn decode<D: bincode::de::Decoder<Context = Context>>(
+/// # impl<Context> bincode_reloaded::Decode<Context> for Foo {
+/// #     fn decode<D: bincode_reloaded::de::Decoder<Context = Context>>(
 /// #         decoder: &mut D,
-/// #     ) -> core::result::Result<Self, bincode::error::DecodeError> {
-/// let x: u8 = bincode::Decode::<Context>::decode(decoder)?;
-/// let x = <u8 as bincode::Decode::<Context>>::decode(decoder)?;
+/// #     ) -> core::result::Result<Self, bincode_reloaded::error::DecodeError> {
+/// let x: u8 = bincode_reloaded::Decode::<Context>::decode(decoder)?;
+/// let x = <u8 as bincode_reloaded::Decode::<Context>>::decode(decoder)?;
 /// #         Ok(Foo)
 /// #     }
 /// # }
-/// # bincode::impl_borrow_decode!(Foo);
+/// # bincode_reloaded::impl_borrow_decode!(Foo);
 /// ```
 ///
 /// You can use `Context` to require contexts for decoding a type:
 /// ```
 /// # /// # use bumpalo::Bump;
-/// use bincode::de::Decoder;
-/// use bincode::error::DecodeError;
+/// use bincode_reloaded::de::Decoder;
+/// use bincode_reloaded::error::DecodeError;
 /// struct BytesInArena<'a>(bumpalo::collections::Vec<'a, u8>);
-/// impl<'a> bincode::Decode<&'a bumpalo::Bump> for BytesInArena<'a> {
+/// impl<'a> bincode_reloaded::Decode<&'a bumpalo::Bump> for BytesInArena<'a> {
 /// fn decode<D: Decoder>(decoder: &mut D) -> Result<Self, DecodeError> {
 ///         todo!()
 ///     }
@@ -109,7 +109,7 @@ pub trait Decode<Context>: Sized {
 ///
 /// This trait should be implemented for types that contain borrowed data, like `&str` and `&[u8]`. If your type does not have borrowed data, consider implementing [Decode] instead.
 ///
-/// This trait will be automatically implemented if you enable the `derive` feature and add `#[derive(bincode::Decode)]` to a type with a lifetime.
+/// This trait will be automatically implemented if you enable the `derive` feature and add `#[derive(bincode_reloaded::Decode)]` to a type with a lifetime.
 pub trait BorrowDecode<'de, Context>: Sized {
     /// Attempt to decode this type with the given [BorrowDecode].
     fn borrow_decode<D: BorrowDecoder<'de, Context = Context>>(
@@ -193,7 +193,7 @@ pub trait Decoder: Sealed {
     /// Notify the decoder that `n` bytes are being reclaimed.
     ///
     /// When decoding container types, a typical implementation would claim to read `len * size_of::<T>()` bytes.
-    /// This is to ensure that bincode won't allocate several GB of memory while constructing the container.
+    /// This is to ensure that bincode_reloaded won't allocate several GB of memory while constructing the container.
     ///
     /// Because the implementation claims `len * size_of::<T>()`, but then has to decode each `T`, this would be marked
     /// as double. This function allows us to un-claim each `T` that gets decoded.
@@ -202,8 +202,8 @@ pub trait Decoder: Sealed {
     /// a nested container (e.g. `Vec<Vec<T>>`), it does not know how much memory is already claimed, and could easily
     /// allocate much more than the user intends.
     /// ```
-    /// # use bincode::de::{Decode, Decoder};
-    /// # use bincode::error::DecodeError;
+    /// # use bincode_reloaded::de::{Decode, Decoder};
+    /// # use bincode_reloaded::error::DecodeError;
     /// # struct Container<T>(Vec<T>);
     /// # impl<T> Container<T> {
     /// #     fn with_capacity(cap: usize) -> Self {
@@ -230,10 +230,10 @@ pub trait Decoder: Sealed {
     ///         Ok(result)
     ///     }
     /// }
-    /// impl<'de, Context, T: bincode::BorrowDecode<'de, Context>> bincode::BorrowDecode<'de, Context> for Container<T> {
-    ///     fn borrow_decode<D: bincode::de::BorrowDecoder<'de, Context = Context>>(
+    /// impl<'de, Context, T: bincode_reloaded::BorrowDecode<'de, Context>> bincode_reloaded::BorrowDecode<'de, Context> for Container<T> {
+    ///     fn borrow_decode<D: bincode_reloaded::de::BorrowDecoder<'de, Context = Context>>(
     ///         decoder: &mut D,
-    ///     ) -> core::result::Result<Self, bincode::error::DecodeError> {
+    ///     ) -> core::result::Result<Self, bincode_reloaded::error::DecodeError> {
     ///         let len = u64::borrow_decode(decoder)?;
     ///         let len: usize = len.try_into().map_err(|_| DecodeError::OutsideUsizeRange(len))?;
     ///         // Make sure we don't allocate too much memory

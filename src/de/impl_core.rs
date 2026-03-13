@@ -4,7 +4,7 @@
 //!
 //! Functions in this are expected to be properly peer reviewed by the community
 //!
-//! Any modifications done are purely to make the code compatible with bincode
+//! Any modifications done are purely to make the code compatible with bincode_reloaded
 
 use core::mem::{self, MaybeUninit};
 

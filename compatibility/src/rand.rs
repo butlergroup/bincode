@@ -7,7 +7,7 @@ use rand::RngExt;
 #[derive(
     Debug, bincode_2::Encode, bincode_2::Decode, serde::Serialize, serde::Deserialize, PartialEq, Eq,
 )]
-#[bincode(crate = "bincode_2")]
+#[bincode_reloaded(crate = "bincode_2")]
 pub struct Lcg64Xsh32 {
     state: u64,
     increment: u64,

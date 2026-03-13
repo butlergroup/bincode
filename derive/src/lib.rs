@@ -5,7 +5,7 @@ mod derive_struct;
 use attribute::ContainerAttributes;
 use virtue::prelude::*;
 
-#[proc_macro_derive(Encode, attributes(bincode))]
+#[proc_macro_derive(Encode, attributes(bincode_reloaded))]
 pub fn derive_encode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     derive_encode_inner(input).unwrap_or_else(|e| e.into_token_stream())
 }
@@ -34,11 +34,11 @@ fn derive_encode_inner(input: TokenStream) -> Result<TokenStream> {
         }
     }
 
-    generator.export_to_file("bincode", "Encode");
+    generator.export_to_file("bincode_reloaded", "Encode");
     generator.finish()
 }
 
-#[proc_macro_derive(Decode, attributes(bincode))]
+#[proc_macro_derive(Decode, attributes(bincode_reloaded))]
 pub fn derive_decode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     derive_decode_inner(input).unwrap_or_else(|e| e.into_token_stream())
 }
@@ -67,11 +67,11 @@ fn derive_decode_inner(input: TokenStream) -> Result<TokenStream> {
         }
     }
 
-    generator.export_to_file("bincode", "Decode");
+    generator.export_to_file("bincode_reloaded", "Decode");
     generator.finish()
 }
 
-#[proc_macro_derive(BorrowDecode, attributes(bincode))]
+#[proc_macro_derive(BorrowDecode, attributes(bincode_reloaded))]
 pub fn derive_borrow_decode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     derive_borrow_decode_inner(input).unwrap_or_else(|e| e.into_token_stream())
 }
@@ -100,6 +100,6 @@ fn derive_borrow_decode_inner(input: TokenStream) -> Result<TokenStream> {
         }
     }
 
-    generator.export_to_file("bincode", "BorrowDecode");
+    generator.export_to_file("bincode_reloaded", "BorrowDecode");
     generator.finish()
 }

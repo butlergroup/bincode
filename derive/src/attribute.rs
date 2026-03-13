@@ -13,7 +13,7 @@ pub struct ContainerAttributes {
 impl Default for ContainerAttributes {
     fn default() -> Self {
         Self {
-            crate_name: "::bincode".to_string(),
+            crate_name: "::bincode_reloaded".to_string(),
             bounds: None,
             decode_bounds: None,
             decode_context: None,
@@ -25,7 +25,7 @@ impl Default for ContainerAttributes {
 
 impl FromAttribute for ContainerAttributes {
     fn parse(group: &Group) -> Result<Option<Self>> {
-        let attributes = match parse_tagged_attribute(group, "bincode")? {
+        let attributes = match parse_tagged_attribute(group, "bincode_reloaded")? {
             Some(body) => body,
             None => return Ok(None),
         };
@@ -107,7 +107,7 @@ pub struct FieldAttributes {
 
 impl FromAttribute for FieldAttributes {
     fn parse(group: &Group) -> Result<Option<Self>> {
-        let attributes = match parse_tagged_attribute(group, "bincode")? {
+        let attributes = match parse_tagged_attribute(group, "bincode_reloaded")? {
             Some(body) => body,
             None => return Ok(None),
         };

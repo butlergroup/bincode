@@ -55,7 +55,7 @@ where
 pub trait BorrowReader<'storage>: Reader {
     /// Read exactly `length` bytes and return a slice to this data. If not enough bytes could be read, an error should be returned.
     ///
-    /// *note*: Exactly `length` bytes must be returned. If less bytes are returned, bincode may panic. If more bytes are returned, the excess bytes may be discarded.
+    /// *note*: Exactly `length` bytes must be returned. If less bytes are returned, bincode_reloaded may panic. If more bytes are returned, the excess bytes may be discarded.
     fn take_bytes(&mut self, length: usize) -> Result<&'storage [u8], DecodeError>;
 }
 

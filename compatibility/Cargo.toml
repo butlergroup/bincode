@@ -1,12 +1,12 @@
 [package]
-name = "bincode_compatibility"
+name = "bincode_reloaded_compatibility"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bincode_2 = { path = "..", package = "bincode", features = ["serde"] }
-bincode_1 = { version = "1", package = "bincode" }
+bincode_2 = { path = "..", package = "bincode_reloaded", features = ["serde"] }
+bincode_1 = { version = "1", package = "bincode_reloaded" }
 serde = { version = "1.0.228", features = ["derive"] }
 rand = "0.10.0"

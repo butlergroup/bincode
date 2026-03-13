@@ -13,11 +13,11 @@ pub use self::encoder::EncoderImpl;
 
 /// Any source that can be encoded. This trait should be implemented for all types that you want to be able to use with any of the `encode_with` methods.
 ///
-/// This trait will be automatically implemented if you enable the `derive` feature and add `#[derive(bincode::Encode)]` to your trait.
+/// This trait will be automatically implemented if you enable the `derive` feature and add `#[derive(bincode_reloaded::Encode)]` to your trait.
 ///
 /// # Implementing this trait manually
 ///
-/// If you want to implement this trait for your type, the easiest way is to add a `#[derive(bincode::Encode)]`, build and check your `target/generated/bincode/` folder. This should generate a `<Struct name>_Encode.rs` file.
+/// If you want to implement this trait for your type, the easiest way is to add a `#[derive(bincode_reloaded::Encode)]`, build and check your `target/generated/bincode_reloaded/` folder. This should generate a `<Struct name>_Encode.rs` file.
 ///
 /// For this struct:
 ///
@@ -34,13 +34,13 @@ pub use self::encoder::EncoderImpl;
 /// #     pub x: f32,
 /// #     pub y: f32,
 /// # }
-/// impl bincode::Encode for Entity {
-///     fn encode<E: bincode::enc::Encoder>(
+/// impl bincode_reloaded::Encode for Entity {
+///     fn encode<E: bincode_reloaded::enc::Encoder>(
 ///         &self,
 ///         encoder: &mut E,
-///     ) -> core::result::Result<(), bincode::error::EncodeError> {
-///         bincode::Encode::encode(&self.x, encoder)?;
-///         bincode::Encode::encode(&self.y, encoder)?;
+///     ) -> core::result::Result<(), bincode_reloaded::error::EncodeError> {
+///         bincode_reloaded::Encode::encode(&self.x, encoder)?;
+///         bincode_reloaded::Encode::encode(&self.y, encoder)?;
 ///         Ok(())
 ///     }
 /// }

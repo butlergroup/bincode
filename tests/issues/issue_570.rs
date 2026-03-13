@@ -1,7 +1,7 @@
 #![cfg(feature = "derive")]
 #![allow(dead_code)]
 
-#[derive(bincode::Encode, bincode::Decode)]
+#[derive(bincode_reloaded::Encode, bincode_reloaded::Decode)]
 pub struct Eg<D, E> {
     data: (D, E),
 }

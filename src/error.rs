@@ -94,7 +94,7 @@ pub enum DecodeError {
         ///
         /// **Note**: this is only an estimate and not indicative of the actual bytes needed.
         ///
-        /// **Note**: Bincode has no look-ahead mechanism. This means that this will only return the amount of bytes to be read for the current action, and not take into account the entire data structure being read.
+        /// **Note**: bincode_reloaded has no look-ahead mechanism. This means that this will only return the amount of bytes to be read for the current action, and not take into account the entire data structure being read.
         additional: usize,
     },
 
@@ -195,7 +195,7 @@ pub enum DecodeError {
         ///
         /// **Note**: this is only an estimate and not indicative of the actual bytes needed.
         ///
-        /// **Note**: Bincode has no look-ahead mechanism. This means that this will only return the amount of bytes to be read for the current action, and not take into account the entire data structure being read.
+        /// **Note**: bincode_reloaded has no look-ahead mechanism. This means that this will only return the amount of bytes to be read for the current action, and not take into account the entire data structure being read.
         additional: usize,
     },
 

@@ -10,7 +10,7 @@ type NodeId = u64;
 #[derive(
     bincode_2::Encode, bincode_2::Decode, serde::Serialize, serde::Deserialize, Debug, PartialEq, Eq,
 )]
-#[bincode(crate = "bincode_2")]
+#[bincode_reloaded(crate = "bincode_2")]
 pub struct Membership {
     /// learners set
     learners: BTreeSet<NodeId>,

@@ -7,8 +7,8 @@ type NodeId = u64;
 use std::collections::BTreeSet;
 
 #[derive(
-    bincode::Encode,
-    bincode::Decode,
+    bincode_reloaded::Encode,
+    bincode_reloaded::Decode,
     serde_derive::Serialize,
     serde_derive::Deserialize,
     Debug,
@@ -27,10 +27,10 @@ fn test() {
     };
     start.learners.insert(1);
 
-    let config = bincode::config::legacy();
-    let encoded = bincode::encode_to_vec(&start, config).unwrap();
+    let config = bincode_reloaded::config::legacy();
+    let encoded = bincode_reloaded::encode_to_vec(&start, config).unwrap();
     std::dbg!(&encoded);
-    let decoded: Membership = bincode::serde::decode_from_slice(&encoded, config)
+    let decoded: Membership = bincode_reloaded::serde::decode_from_slice(&encoded, config)
         .unwrap()
         .0;
     assert_eq!(start, decoded);

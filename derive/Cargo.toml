@@ -1,6 +1,6 @@
 [package]
-name = "bincode_derive"
-version = "2.0.1" # remember to update bincode
+name = "bincode_reloaded_derive"
+version = "3.1.0" # remember to update bincode_reloaded
 authors = [
     "Zoey Riordan <zoey@dos.cafe>",
     "Victor Koenders <bincode@trangar.com>",
@@ -9,13 +9,13 @@ authors = [
 edition = "2021"
 rust-version = "1.86.0"
 
-repository = "https://github.com/butlergroup/bincode"
-documentation = "https://docs.rs/bincode_derive"
+repository = "https://github.com/butlergroup/bincode_reloaded"
+documentation = "https://docs.rs/bincode_reloaded_derive"
 readme = "./README.md"
 categories = ["encoding", "network-programming"]
 keywords = ["binary", "encode", "decode", "serialize", "deserialize"]
 license = "MIT"
-description = "Implementation of #[derive(Encode, Decode)] for bincode"
+description = "Implementation of #[derive(Encode, Decode)] for bincode_reloaded"
 
 [lib]
 proc-macro = true

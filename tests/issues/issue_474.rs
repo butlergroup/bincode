@@ -56,29 +56,29 @@ impl MemCache {
         key: &Uuid,
         cache_data: &T,
         expire_seconds: i64,
-    ) -> Result<(), bincode::error::EncodeError>
+    ) -> Result<(), bincode_reloaded::error::EncodeError>
     where
         T: Send + Sync + serde::Serialize,
     {
-        let config = bincode::config::standard();
+        let config = bincode_reloaded::config::standard();
         let mut guard = self.cache.write().unwrap();
 
-        let encoded = bincode::serde::encode_to_vec(cache_data, config)?;
+        let encoded = bincode_reloaded::serde::encode_to_vec(cache_data, config)?;
         let cache_item = CacheItem::new(encoded, expire_seconds);
 
         guard.insert(*key, cache_item);
         Ok(())
     }
 
-    fn get_data<T>(&self, key: &Uuid) -> Result<T, bincode::error::DecodeError>
+    fn get_data<T>(&self, key: &Uuid) -> Result<T, bincode_reloaded::error::DecodeError>
     where
         T: Send + Sync + DeserializeOwned,
     {
-        let config = bincode::config::standard();
+        let config = bincode_reloaded::config::standard();
         let guard = self.cache.read().unwrap();
         let cache_item = guard.get(key).unwrap();
         let (decoded, _len): (T, usize) =
-            bincode::serde::decode_from_slice(&cache_item.payload[..], config)?;
+            bincode_reloaded::serde::decode_from_slice(&cache_item.payload[..], config)?;
         Ok(decoded)
     }
 }

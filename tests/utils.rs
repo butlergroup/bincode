@@ -3,11 +3,11 @@ use core::fmt::Debug;
 fn the_same_with_config<V, C, CMP>(element: &V, config: C, cmp: CMP)
 where
     V: TheSameTrait,
-    C: bincode::config::Config,
+    C: bincode_reloaded::config::Config,
     CMP: Fn(&V, &V) -> bool,
 {
     let mut buffer = [0u8; 2048];
-    let len = bincode::encode_into_slice(element, &mut buffer, config).unwrap();
+    let len = bincode_reloaded::encode_into_slice(element, &mut buffer, config).unwrap();
     println!(
         "{:?} ({}): {:?} ({:?})",
         element,
@@ -15,7 +15,7 @@ where
         &buffer[..len],
         core::any::type_name::<C>()
     );
-    let (decoded, decoded_len): (V, usize) = bincode::decode_from_slice(&buffer, config).unwrap();
+    let (decoded, decoded_len): (V, usize) = bincode_reloaded::decode_from_slice(&buffer, config).unwrap();
 
     assert!(
         cmp(element, &decoded),
@@ -34,13 +34,13 @@ where
 fn the_same_with_config_serde<V, C, CMP>(element: &V, config: C, cmp: CMP)
 where
     V: TheSameTrait,
-    C: bincode::config::Config,
+    C: bincode_reloaded::config::Config,
     CMP: Fn(&V, &V) -> bool,
 {
     let mut buffer = [0u8; 2048];
-    let len = bincode::serde::encode_into_slice(element, &mut buffer, config);
+    let len = bincode_reloaded::serde::encode_into_slice(element, &mut buffer, config);
 
-    let decoded = bincode::serde::decode_from_slice(&buffer, config);
+    let decoded = bincode_reloaded::serde::decode_from_slice(&buffer, config);
 
     let len = len.unwrap();
     let (decoded, decoded_len): (V, usize) = decoded.unwrap();
@@ -70,56 +70,56 @@ where
     // A matrix of each different config option possible
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_little_endian()
             .with_fixed_int_encoding(),
         &cmp,
     );
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_big_endian()
             .with_fixed_int_encoding(),
         &cmp,
     );
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_little_endian()
             .with_variable_int_encoding(),
         &cmp,
     );
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_big_endian()
             .with_variable_int_encoding(),
         &cmp,
     );
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_little_endian()
             .with_fixed_int_encoding(),
         &cmp,
     );
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_big_endian()
             .with_fixed_int_encoding(),
         &cmp,
     );
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_little_endian()
             .with_variable_int_encoding(),
         &cmp,
     );
     the_same_with_config(
         &element,
-        bincode::config::standard()
+        bincode_reloaded::config::standard()
             .with_big_endian()
             .with_variable_int_encoding(),
         &cmp,
@@ -128,8 +128,8 @@ where
 
 #[cfg(feature = "serde")]
 pub trait TheSameTrait:
-    bincode::Encode
-    + bincode::Decode<()>
+    bincode_reloaded::Encode
+    + bincode_reloaded::Decode<()>
     + serde::de::DeserializeOwned
     + serde::Serialize
     + Debug
@@ -138,8 +138,8 @@ pub trait TheSameTrait:
 }
 #[cfg(feature = "serde")]
 impl<T> TheSameTrait for T where
-    T: bincode::Encode
-        + bincode::Decode<()>
+    T: bincode_reloaded::Encode
+        + bincode_reloaded::Decode<()>
         + serde::de::DeserializeOwned
         + serde::Serialize
         + Debug
@@ -148,9 +148,9 @@ impl<T> TheSameTrait for T where
 }
 
 #[cfg(not(feature = "serde"))]
-pub trait TheSameTrait: bincode::Encode + bincode::Decode<()> + Debug + 'static {}
+pub trait TheSameTrait: bincode_reloaded::Encode + bincode_reloaded::Decode<()> + Debug + 'static {}
 #[cfg(not(feature = "serde"))]
-impl<T> TheSameTrait for T where T: bincode::Encode + bincode::Decode<()> + Debug + 'static {}
+impl<T> TheSameTrait for T where T: bincode_reloaded::Encode + bincode_reloaded::Decode<()> + Debug + 'static {}
 
 #[allow(dead_code)] // This is not used in every test
 pub fn the_same<V: TheSameTrait + PartialEq>(element: V) {

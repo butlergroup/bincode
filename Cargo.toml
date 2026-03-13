@@ -2,8 +2,8 @@
 members = ["derive", "compatibility"]
 
 [package]
-name = "bincode"
-version = "2.0.1" # remember to update html_root_url and bincode_derive
+name = "bincode_reloaded"
+version = "3.1.0" # remember to update html_root_url and bincode_derive
 authors = [
     "Ty Overby <ty@pre-alpha.com>",
     "Zoey Riordan <zoey@dos.cafe>",
@@ -15,9 +15,9 @@ rust-version = "1.86.0"
 
 publish = true
 
-repository = "https://github.com/butlergroup/bincode"
-documentation = "https://docs.rs/bincode"
-readme = "./readme.md"
+repository = "https://github.com/butlergroup/bincode_reloaded"
+documentation = "https://docs.rs/bincode_reloaded"
+readme = "./README.md"
 categories = ["encoding", "network-programming"]
 keywords = ["binary", "encode", "decode", "serialize", "deserialize"]
 
@@ -30,10 +30,10 @@ edition = "2021"
 default = ["std", "derive"]
 std = ["alloc", "serde?/std"]
 alloc = ["serde?/alloc"]
-derive = ["bincode_derive"]
+derive = ["bincode_reloaded_derive"]
 
 [dependencies]
-bincode_derive = { path = "derive", version = "2.0.1", optional = true }
+bincode_reloaded_derive = { path = "derive", version = "3.1.0", optional = true }
 serde = { version = "1.0.228", default-features = false, optional = true }
 unty = "0.0.5"
 
@@ -48,7 +48,7 @@ rand = "0.10.0"
 uuid = { version = "1.22.0", features = ["serde"] }
 chrono = { version = "0.4.44", features = ["serde"] }
 glam = { version = "0.32.1", features = ["serde"] }
-bincode_1 = { version = "1.3", package = "bincode" }
+bincode_1 = { version = "1.3", package = "bincode_reloaded" }
 serde = { version = "1.0.228", features = ["derive"] }
 bumpalo = { version = "3.20.2", features = ["collections"] }
 
