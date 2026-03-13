@@ -20,7 +20,7 @@
           "strategy":
             {
               "fail-fast": false,
-              "matrix": { "rust": ["stable", "beta", "nightly", "1.85.0"] },
+              "matrix": { "rust": ["stable", "beta", "nightly", "1.86.0"] },
             },
           "steps":
             [
@@ -60,7 +60,7 @@
               "matrix":
                 {
                   "runner": ["ubuntu-latest", "windows-latest", "macos-latest"],
-                  "rust": ["stable", "1.85.0"],
+                  "rust": ["stable", "1.86.0"],
                   "features":
                     [
                       "",
@@ -111,7 +111,7 @@
                 "with":
                   {
                     "profile": "minimal",
-                    "toolchain": "1.85.0",
+                    "toolchain": "1.86.0",
                     "override": true,
                     "components": "rustfmt, clippy",
                   },
@@ -145,7 +145,7 @@
                 "with":
                   {
                     "profile": "minimal",
-                    "toolchain": "1.85.0",
+                    "toolchain": "1.86.0",
                     "override": true,
                   },
                 "name": "Install Rust stable",
@@ -158,6 +158,50 @@
                     "args": "--manifest-path compatibility/Cargo.toml",
                   },
                 "name": "Run compatibility tests",
+              },
+            ],
+        },
+      "coverage":
+        {
+          "runs-on": "ubuntu-latest",
+          "env":
+            {
+              "RUSTFLAGS": "-Cinstrument-coverage -Clink-dead-code -Coverflow-checks=off",
+              "LLVM_PROFILE_FILE": "coverage/%p-%m.profraw",
+            },
+          "steps":
+            [
+              { "uses": "actions/checkout@v4" },
+              {
+                "name": "Set up Rust with coverage tools",
+                "uses": "actions-rs/toolchain@v1",
+                "with":
+                  {
+                    "toolchain": "stable",
+                    "override": true,
+                    "components": "llvm-tools-preview",
+                  },
+              },
+              {
+                "name": "Install grcov",
+                "run": "curl -LsSf https://github.com/mozilla/grcov/releases/download/v0.8.19/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar xj\nsudo mv grcov /usr/local/bin/",
+              },
+              {
+                "name": "Run tests with coverage",
+                "run": "cargo clean\ncargo build --tests\ncargo test",
+              },
+              {
+                "name": "Generate coverage report",
+                "run": "mkdir -p coverage\ngrcov . \\\n  --binary-path ./target/debug/ \\\n  --source-dir . \\\n  --output-type lcov \\\n  --branch \\\n  --ignore-not-existing \\\n  --ignore \"/*/.cargo/**\" \\\n  --ignore \"target/**\" \\\n  --output-path coverage/lcov.info",
+              },
+              {
+                "name": "Coveralls GitHub Action",
+                "uses": "coverallsapp/github-action@v2.3.6",
+                "env":
+                  {
+                    "COVERALLS_REPO_TOKEN": "${{ secrets.COVERALLS_REPO_TOKEN }}",
+                  },
+                "with": { "path-to-lcov": "coverage/lcov.info" },
               },
             ],
         },

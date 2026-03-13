@@ -1,16 +1,22 @@
-## Notes on this fork
-
- - Will be maintained (depenencies/crates updated & CVEs addressed in a timely manner, etc.)
-
 # Bincode
 
 <img align="right" src="./logo.svg" />
 
-[![CI](https://github.com/butlergroup/bincode/workflows/CI/badge.svg)](https://github.com/butlergroup/bincode/actions)
-[![](https://img.shields.io/crates/v/bincode.svg)](https://crates.io/crates/bincode)
+[![Rust CI/Unit Tests](https://github.com/butlergroup/bincode/workflows/CI/badge.svg)](https://github.com/butlergroup/bincode/actions)
+<!-- [![](https://img.shields.io/crates/v/bincode.svg)](https://crates.io/crates/bincode) -->
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <!-- [![](https://img.shields.io/badge/bincode-rustc_1.41.1+-lightgray.svg)](https://blog.rust-lang.org/2020/02/27/Rust-1.41.1.html) -->
-[![Matrix](https://img.shields.io/matrix/bincode:matrix.org?label=Matrix%20Chat)](https://matrix.to/#/#bincode:matrix.org)
+
+[![CodeQL](https://github.com/butlergroup/bincode/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/butlergroup/bincode/actions/workflows/github-code-scanning/codeql)
+[![Snyk Security-Monitored](https://img.shields.io/badge/Snyk%20Security-Monitored-purple)](https://app.snyk.io/share/784f6fef-6aaf-47ed-81ba-99e05b854665)
+[![dependency status](https://deps.rs/repo/github/butlergroup/bincode/status.svg)](https://deps.rs/repo/github/butlergroup/bincode)
+[![rust-clippy analyze](https://github.com/butlergroup/bincode/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/butlergroup/bincode/actions/workflows/rust-clippy.yml)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12165/badge)](https://www.bestpractices.dev/projects/12165)
+[![Scorecard supply-chain security](https://github.com/butlergroup/bincode/actions/workflows/scorecard.yml/badge.svg)](https://github.com/butlergroup/bincode/actions/workflows/scorecard.yml)
+[![Microsoft Defender For Devops](https://github.com/butlergroup/bincode/actions/workflows/defender-for-devops.yml/badge.svg)](https://github.com/butlergroup/bincode/actions/workflows/defender-for-devops.yml)
+[![Coverage Status](https://coveralls.io/repos/github/butlergroup/bincode/badge.svg?branch=main)](https://coveralls.io/github/butlergroup/bincode?branch=main)
+[![Feature Requests](https://img.shields.io/github/issues/butlergroup/bincode/feature-request.svg)](https://github.com/butlergroup/bincode/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+[![Bugs](https://img.shields.io/github/issues/butlergroup/bincode/bug.svg)](https://github.com/butlergroup/bincode/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
 
 A compact encoder / decoder pair that uses a binary zero-fluff encoding scheme.
 The size of the encoded object will be the same or smaller than the size that
@@ -22,6 +28,10 @@ binary-encode exposes a Reader/Writer API that makes it work
 perfectly with other stream-based APIs such as Rust files, network streams,
 and the [flate2-rs](https://github.com/rust-lang/flate2-rs) compression
 library.
+
+## Notes on this fork
+
+ - Will be maintained (depenencies/crates updated & CVEs addressed in a timely manner, etc.)
 
 ## [API Documentation](https://docs.rs/bincode/)
 
@@ -104,7 +114,7 @@ maximum size limit. Malicious inputs will fail upon deserialization.
 
 ### What is Bincode's MSRV (minimum supported Rust version)?
 
-Bincode 2.0 has an MSRV of 1.85.0. Any changes to the MSRV are considered a breaking change for semver purposes, except when certain features are enabled. Features affecting MSRV are documented in the crate root.
+Bincode 2.0 has an MSRV of 1.86.0. Any changes to the MSRV are considered a breaking change for semver purposes, except when certain features are enabled. Features affecting MSRV are documented in the crate root.
 
 ### Why does bincode not respect `#[repr(u8)]`?
 
