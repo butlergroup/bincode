@@ -6,6 +6,11 @@
       "push": { "branches": ["main", "v*.x", "ci/*"] },
       "pull_request": { "branches": ["main", "v*.x"] },
     },
+  "concurrency":
+    {
+      "group": "${{ github.workflow }}-${{ github.ref }}",
+      "cancel-in-progress": true,
+    },
   "jobs": {
       "test_cross_std":
         {

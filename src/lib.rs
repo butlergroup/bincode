@@ -230,8 +230,8 @@ pub mod migration_guide {
     #![doc = include_str!("../docs/migration_guide.md")]
 }
 
-// Test the examples in readme.md
+// Test the examples in README.md
 #[cfg(all(feature = "alloc", feature = "derive", doctest))]
 mod readme {
-    #![doc = include_str!("../readme.md")]
+    #![doc = include_str!("../README.md")]
 }
