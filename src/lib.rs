@@ -71,7 +71,7 @@
 //! [`net::TcpStream`]: std::net::TcpStream
 //!
 
-#![doc(html_root_url = "https://docs.rs/bincode_reloaded/3.1.0")]
+#![doc(html_root_url = "https://docs.rs/bincode_reloaded/2.0.1")]
 #![crate_name = "bincode_reloaded"]
 #![crate_type = "rlib"]
 
