@@ -17,7 +17,6 @@
                   {
                     "oss-fuzz-project-name": "bincode_reloaded",
                     "language": "rust",
-                    "project-src-path": "./",
                   },
               },
               {
@@ -28,7 +27,6 @@
                     "oss-fuzz-project-name": "bincode_reloaded",
                     "fuzz-seconds": 300,
                     "language": "rust",
-                    "project-src-path": "./",
                   },
               },
               {
