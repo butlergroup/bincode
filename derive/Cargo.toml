@@ -6,7 +6,7 @@ authors = [
     "Victor Koenders <bincode@trangar.com>",
     "Chris Butler <chris.butler@butlergroup.net>",
 ]
-edition = "2021"
+edition = "2024"
 rust-version = "1.86.0"
 
 repository = "https://github.com/butlergroup/bincode_reloaded"
