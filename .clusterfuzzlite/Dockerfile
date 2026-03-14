@@ -15,5 +15,6 @@
 ################################################################################
 FROM gcr.io/oss-fuzz-base/base-builder-rust as builder
 RUN apt-get update
+RUN git clone --depth 1 https://github.com/butlergroup/bincode_reloaded
 ENV RUSTUP_TOOLCHAIN nightly-2025-01-10
 COPY .clusterfuzzlite/build.sh $SRC/
