@@ -14,7 +14,11 @@
                 "id": "build",
                 "uses": "google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master",
                 "with":
-                  { "oss-fuzz-project-name": "bincode_reloaded", "language": "rust" },
+                  {
+                    "oss-fuzz-project-name": "bincode_reloaded",
+                    "language": "rust",
+                    "project-src-path": "./",
+                  },
               },
               {
                 "name": "Run Fuzzers",
@@ -24,6 +28,7 @@
                     "oss-fuzz-project-name": "bincode_reloaded",
                     "fuzz-seconds": 300,
                     "language": "rust",
+                    "project-src-path": "./",
                   },
               },
               {
