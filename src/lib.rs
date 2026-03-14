@@ -85,7 +85,7 @@ mod features;
 pub(crate) mod utils;
 pub(crate) mod varint;
 
-use de::{read::Reader, Decoder};
+use de::{Decoder, read::Reader};
 use enc::write::Writer;
 
 #[cfg(any(

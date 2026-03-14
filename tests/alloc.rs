@@ -132,7 +132,7 @@ fn test_alloc_commons() {
 
 #[test]
 fn test_container_limits() {
-    use bincode_reloaded::{error::DecodeError, BorrowDecode, Decode};
+    use bincode_reloaded::{BorrowDecode, Decode, error::DecodeError};
 
     const DECODE_LIMIT: usize = 100_000;
 
@@ -159,9 +159,12 @@ fn test_container_limits() {
         let name = core::any::type_name::<T>();
         match result {
             Ok(_) => panic!("Decoding {} should fail, it instead succeeded", name),
-            Err(DecodeError::OutsideUsizeRange(_)) if cfg!(target_pointer_width = "32") => {},
-            Err(DecodeError::LimitExceeded) => {},
-            Err(e) => panic!("Expected OutsideUsizeRange (on 32 bit platforms) or LimitExceeded whilst decoding {}, got {:?}", name, e),
+            Err(DecodeError::OutsideUsizeRange(_)) if cfg!(target_pointer_width = "32") => {}
+            Err(DecodeError::LimitExceeded) => {}
+            Err(e) => panic!(
+                "Expected OutsideUsizeRange (on 32 bit platforms) or LimitExceeded whilst decoding {}, got {:?}",
+                name, e
+            ),
         }
     }
 

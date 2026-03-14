@@ -1,7 +1,7 @@
-use super::{de_borrowed::borrow_decode_from_slice, DecodeError as SerdeDecodeError};
+use super::{DecodeError as SerdeDecodeError, de_borrowed::borrow_decode_from_slice};
 use crate::{
     config::Config,
-    de::{read::Reader, Decode, Decoder, DecoderImpl},
+    de::{Decode, Decoder, DecoderImpl, read::Reader},
     error::DecodeError,
 };
 use serde::de::*;

@@ -1,7 +1,7 @@
 // https://github.com/bincode_reloaded-org/bincode_reloaded/issues/618
 
 use bincode_reloaded::{Decode, Encode};
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use serde::{Deserialize, Serialize};
 use std::hint::black_box;
 

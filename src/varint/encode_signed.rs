@@ -1,4 +1,4 @@
-use super::{varint_encode_u128, varint_encode_u16, varint_encode_u32, varint_encode_u64};
+use super::{varint_encode_u16, varint_encode_u32, varint_encode_u64, varint_encode_u128};
 use crate::{config::Endianness, enc::write::Writer, error::EncodeError};
 
 pub fn varint_encode_i16<W: Writer>(

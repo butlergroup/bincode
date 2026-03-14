@@ -1,6 +1,6 @@
 use super::{
-    read::{BorrowReader, Reader},
     BorrowDecode, BorrowDecoder, Decode, Decoder,
+    read::{BorrowReader, Reader},
 };
 use crate::{
     config::{Endianness, IntEncoding, InternalEndianConfig, InternalIntEncodingConfig},
@@ -11,8 +11,8 @@ use core::{
     cell::{Cell, RefCell},
     cmp::Reverse,
     num::{
-        NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
-        NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize, Wrapping,
+        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8,
+        NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize, Wrapping,
     },
     ops::{Bound, Range, RangeInclusive},
     time::Duration,
