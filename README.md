@@ -30,8 +30,10 @@ and the [flate2-rs](https://github.com/rust-lang/flate2-rs) compression
 library.
 
 ## Notes on this fork
-
- - Will be maintained (depenencies/crates updated & CVEs addressed in a timely manner, etc.)
+ - originally forked from bincode 2.0.1
+ - several security scanners have been added to the repo to ensure any issues are found quickly
+ - minor code optimizations to improve efficiency
+ - will be maintained (depenencies/crates updated & CVEs addressed in a timely manner, etc.)
 
 ## [API Documentation](https://docs.rs/bincode_reloaded/)
 
@@ -134,7 +136,7 @@ Please also read our [Privacy Policy](https://github.com/butlergroup/bincode_rel
 
 ## Contact
 
-Have questions or suggestions? Reach out to us at welcome@butlergroup.net. Thank you and happy coding! :)
+Have questions or suggestions? Reach out to us at dev@butlergroup.net. Thank you and happy coding! :)
 
 ## Star History
 
