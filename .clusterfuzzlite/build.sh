@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 ################################################################################
-cd $SRC
+cd /src
 cargo fuzz build -O
-cp $SRC/fuzz/target/x86_64-unknown-linux-gnu/release/compat $OUT/
-cp $SRC/fuzz/target/x86_64-unknown-linux-gnu/release/roundtrip $OUT/
+cp target/x86_64-unknown-linux-gnu/release/compat $OUT/
+cp target/x86_64-unknown-linux-gnu/release/roundtrip $OUT/
