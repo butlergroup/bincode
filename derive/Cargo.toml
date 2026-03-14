@@ -11,7 +11,7 @@ rust-version = "1.86.0"
 
 repository = "https://github.com/butlergroup/bincode_reloaded"
 documentation = "https://docs.rs/bincode_reloaded_derive"
-readme = "./README.md"
+readme = "./readme.md"
 categories = ["encoding", "network-programming"]
 keywords = ["binary", "encode", "decode", "serialize", "deserialize"]
 license = "MIT"

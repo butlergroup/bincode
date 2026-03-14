@@ -10,9 +10,11 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "0.4.12"
-bincode_reloaded = { path = ".." }      # matches the crate name in ../Cargo.toml
 bincodev1 = { version = "1.3.3", package = "bincode" }
 serde = { version = "1.0.228", features = ["derive"] }
+
+[dependencies.bincode_reloaded]
+path = ".."
 
 # Prevent this from interfering with workspaces
 [workspace]
