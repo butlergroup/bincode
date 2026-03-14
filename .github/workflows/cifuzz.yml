@@ -15,8 +15,8 @@
                 "uses": "google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master",
                 "with":
                   {
-                    "oss-fuzz-project-name": "bincode_reloaded",
                     "language": "rust",
+                    "project-src-path": "./",
                   },
               },
               {
@@ -24,7 +24,7 @@
                 "uses": "google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master",
                 "with":
                   {
-                    "oss-fuzz-project-name": "bincode_reloaded",
+                    "project-src-path": "./",
                     "fuzz-seconds": 300,
                     "language": "rust",
                   },
