@@ -64,8 +64,11 @@ fn index_item_decode(c: &mut Criterion) {
 
     c.bench_function("bench v2 decode (legacy)", |b| {
         b.iter(|| {
-            let _: (Vec<MyStruct>, _) =
-                black_box(bincode_reloaded::decode_from_slice(black_box(&encodedv1), config)).unwrap();
+            let _: (Vec<MyStruct>, _) = black_box(bincode_reloaded::decode_from_slice(
+                black_box(&encodedv1),
+                config,
+            ))
+            .unwrap();
         });
     });
 }

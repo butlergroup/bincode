@@ -67,9 +67,11 @@ fn bufreader_varint_u8(c: &mut Criterion) {
     let bytes = bincode_reloaded::encode_to_vec(input, config).unwrap();
     c.bench_function("bufreader_varint_u8", |b| {
         b.iter(|| {
-            let _: Vec<u8> =
-                bincode_reloaded::decode_from_reader(&mut std::io::BufReader::new(&bytes[..]), config)
-                    .unwrap();
+            let _: Vec<u8> = bincode_reloaded::decode_from_reader(
+                &mut std::io::BufReader::new(&bytes[..]),
+                config,
+            )
+            .unwrap();
         })
     });
 }
@@ -83,9 +85,11 @@ fn bufreader_varint_u16(c: &mut Criterion) {
     let bytes = bincode_reloaded::encode_to_vec(input, config).unwrap();
     c.bench_function("bufreader_varint_u16", |b| {
         b.iter(|| {
-            let _: Vec<u16> =
-                bincode_reloaded::decode_from_reader(&mut std::io::BufReader::new(&bytes[..]), config)
-                    .unwrap();
+            let _: Vec<u16> = bincode_reloaded::decode_from_reader(
+                &mut std::io::BufReader::new(&bytes[..]),
+                config,
+            )
+            .unwrap();
         })
     });
 }
@@ -99,9 +103,11 @@ fn bufreader_varint_u32(c: &mut Criterion) {
     let bytes = bincode_reloaded::encode_to_vec(input, config).unwrap();
     c.bench_function("bufreader_varint_u32", |b| {
         b.iter(|| {
-            let _: Vec<u32> =
-                bincode_reloaded::decode_from_reader(&mut std::io::BufReader::new(&bytes[..]), config)
-                    .unwrap();
+            let _: Vec<u32> = bincode_reloaded::decode_from_reader(
+                &mut std::io::BufReader::new(&bytes[..]),
+                config,
+            )
+            .unwrap();
         })
     });
 }
@@ -115,9 +121,11 @@ fn bufreader_varint_u64(c: &mut Criterion) {
     let bytes = bincode_reloaded::encode_to_vec(input, config).unwrap();
     c.bench_function("bufreader_varint_u64", |b| {
         b.iter(|| {
-            let _: Vec<u64> =
-                bincode_reloaded::decode_from_reader(&mut std::io::BufReader::new(&bytes[..]), config)
-                    .unwrap();
+            let _: Vec<u64> = bincode_reloaded::decode_from_reader(
+                &mut std::io::BufReader::new(&bytes[..]),
+                config,
+            )
+            .unwrap();
         })
     });
 }

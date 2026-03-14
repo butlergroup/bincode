@@ -45,7 +45,9 @@ impl<Context> bincode_reloaded::Decode<Context> for Foo {
 #[test]
 fn test_std_cursor() {
     let mut cursor = Cursor::<&[u8]>::new(&[5, 10]);
-    let foo: Foo = bincode_reloaded::decode_from_std_read(&mut cursor, bincode_reloaded::config::standard()).unwrap();
+    let foo: Foo =
+        bincode_reloaded::decode_from_std_read(&mut cursor, bincode_reloaded::config::standard())
+            .unwrap();
 
     assert_eq!(foo.a, 5);
     assert_eq!(foo.b, 10);
@@ -65,7 +67,9 @@ fn test_std_file() {
     assert_eq!(bytes_written, 2);
     file.seek(SeekFrom::Start(0)).unwrap();
 
-    let foo: Foo = bincode_reloaded::decode_from_std_read(&mut file, bincode_reloaded::config::standard()).unwrap();
+    let foo: Foo =
+        bincode_reloaded::decode_from_std_read(&mut file, bincode_reloaded::config::standard())
+            .unwrap();
 
     assert_eq!(foo.a, 30);
     assert_eq!(foo.b, 50);

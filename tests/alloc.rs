@@ -43,7 +43,9 @@ bincode_reloaded::impl_borrow_decode!(Foo);
 
 #[test]
 fn test_vec() {
-    let vec = bincode_reloaded::encode_to_vec(Foo { a: 5, b: 10 }, bincode_reloaded::config::standard()).unwrap();
+    let vec =
+        bincode_reloaded::encode_to_vec(Foo { a: 5, b: 10 }, bincode_reloaded::config::standard())
+            .unwrap();
     assert_eq!(vec, &[5, 10]);
 
     let (foo, len): (Foo, usize) =
@@ -142,7 +144,8 @@ fn test_container_limits() {
         #[cfg(target_pointer_width = "32")]
         bincode_reloaded::encode_to_vec(u32::MAX, bincode_reloaded::config::standard()).unwrap(),
         // A high value which doesn't overflow, but exceeds the decode limit
-        bincode_reloaded::encode_to_vec(DECODE_LIMIT as u64, bincode_reloaded::config::standard()).unwrap(),
+        bincode_reloaded::encode_to_vec(DECODE_LIMIT as u64, bincode_reloaded::config::standard())
+            .unwrap(),
     ];
 
     fn validate_fail<T: Decode<()> + for<'de> BorrowDecode<'de, ()> + core::fmt::Debug>(
@@ -192,6 +195,8 @@ fn test_arc_str() {
     };
     let slice = &target[..len];
 
-    let decoded: Arc<str> = bincode_reloaded::borrow_decode_from_slice(slice, config).unwrap().0;
+    let decoded: Arc<str> = bincode_reloaded::borrow_decode_from_slice(slice, config)
+        .unwrap()
+        .0;
     assert_eq!(decoded, start);
 }

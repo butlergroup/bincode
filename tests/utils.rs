@@ -15,7 +15,8 @@ where
         &buffer[..len],
         core::any::type_name::<C>()
     );
-    let (decoded, decoded_len): (V, usize) = bincode_reloaded::decode_from_slice(&buffer, config).unwrap();
+    let (decoded, decoded_len): (V, usize) =
+        bincode_reloaded::decode_from_slice(&buffer, config).unwrap();
 
     assert!(
         cmp(element, &decoded),
@@ -148,9 +149,15 @@ impl<T> TheSameTrait for T where
 }
 
 #[cfg(not(feature = "serde"))]
-pub trait TheSameTrait: bincode_reloaded::Encode + bincode_reloaded::Decode<()> + Debug + 'static {}
+pub trait TheSameTrait:
+    bincode_reloaded::Encode + bincode_reloaded::Decode<()> + Debug + 'static
+{
+}
 #[cfg(not(feature = "serde"))]
-impl<T> TheSameTrait for T where T: bincode_reloaded::Encode + bincode_reloaded::Decode<()> + Debug + 'static {}
+impl<T> TheSameTrait for T where
+    T: bincode_reloaded::Encode + bincode_reloaded::Decode<()> + Debug + 'static
+{
+}
 
 #[allow(dead_code)] // This is not used in every test
 pub fn the_same<V: TheSameTrait + PartialEq>(element: V) {

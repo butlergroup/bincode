@@ -12,7 +12,9 @@ pub struct SerdeRoundtrip {
     pub c: TupleS,
 }
 
-#[derive(Serialize, Deserialize, bincode_reloaded::Encode, bincode_reloaded::Decode, PartialEq, Debug)]
+#[derive(
+    Serialize, Deserialize, bincode_reloaded::Encode, bincode_reloaded::Decode, PartialEq, Debug,
+)]
 pub struct TupleS(f32, f32, f32);
 
 #[test]
@@ -42,7 +44,8 @@ fn test_serde_round_trip() {
     .unwrap();
     assert_eq!(bytes, &[15, 0, 0, 0, 64, 0, 0, 64, 64, 0, 0, 128, 64]);
     let (result, len): (SerdeRoundtrip, usize) =
-        bincode_reloaded::serde::decode_from_slice(&bytes, bincode_reloaded::config::standard()).unwrap();
+        bincode_reloaded::serde::decode_from_slice(&bytes, bincode_reloaded::config::standard())
+            .unwrap();
     assert_eq!(result.a, 15);
     assert_eq!(result.b, 0); // remember: b is skipped
     assert_eq!(result.c, TupleS(2.0, 3.0, 4.0));
@@ -74,17 +77,27 @@ fn test_serialize_deserialize_borrowed_data() {
     ];
 
     let mut result = [0u8; 20];
-    let len = bincode_reloaded::serde::encode_into_slice(&input, &mut result, bincode_reloaded::config::standard())
-        .unwrap();
+    let len = bincode_reloaded::serde::encode_into_slice(
+        &input,
+        &mut result,
+        bincode_reloaded::config::standard(),
+    )
+    .unwrap();
     let result = &result[..len];
     assert_eq!(result, expected);
 
-    let result = bincode_reloaded::serde::encode_to_vec(&input, bincode_reloaded::config::standard()).unwrap();
+    let result =
+        bincode_reloaded::serde::encode_to_vec(&input, bincode_reloaded::config::standard())
+            .unwrap();
 
     assert_eq!(result, expected);
 
     let (output, len): (SerdeWithBorrowedData, usize) =
-        bincode_reloaded::serde::borrow_decode_from_slice(&result, bincode_reloaded::config::standard()).unwrap();
+        bincode_reloaded::serde::borrow_decode_from_slice(
+            &result,
+            bincode_reloaded::config::standard(),
+        )
+        .unwrap();
     assert_eq!(
         SerdeWithBorrowedData {
             b: 0, // remember: b is skipped
@@ -120,17 +133,24 @@ fn test_serialize_deserialize_owned_data() {
     ];
 
     let mut result = [0u8; 20];
-    let len = bincode_reloaded::serde::encode_into_slice(&input, &mut result, bincode_reloaded::config::standard())
-        .unwrap();
+    let len = bincode_reloaded::serde::encode_into_slice(
+        &input,
+        &mut result,
+        bincode_reloaded::config::standard(),
+    )
+    .unwrap();
     let result = &result[..len];
     assert_eq!(result, expected);
 
-    let result = bincode_reloaded::serde::encode_to_vec(&input, bincode_reloaded::config::standard()).unwrap();
+    let result =
+        bincode_reloaded::serde::encode_to_vec(&input, bincode_reloaded::config::standard())
+            .unwrap();
 
     assert_eq!(result, expected);
 
     let (output, len): (SerdeWithOwnedData, usize) =
-        bincode_reloaded::serde::decode_from_slice(&result, bincode_reloaded::config::standard()).unwrap();
+        bincode_reloaded::serde::decode_from_slice(&result, bincode_reloaded::config::standard())
+            .unwrap();
     assert_eq!(
         SerdeWithOwnedData {
             b: 0, // remember: b is skipped
@@ -173,15 +193,23 @@ mod derive {
     fn test_serde_derive() {
         fn test_encode_decode<T>(start: T, expected_len: usize)
         where
-            T: bincode_reloaded::Encode + bincode_reloaded::Decode<()> + PartialEq + core::fmt::Debug,
+            T: bincode_reloaded::Encode
+                + bincode_reloaded::Decode<()>
+                + PartialEq
+                + core::fmt::Debug,
         {
             let mut slice = [0u8; 100];
-            let len = bincode_reloaded::encode_into_slice(&start, &mut slice, bincode_reloaded::config::standard())
-                .unwrap();
+            let len = bincode_reloaded::encode_into_slice(
+                &start,
+                &mut slice,
+                bincode_reloaded::config::standard(),
+            )
+            .unwrap();
             assert_eq!(len, expected_len);
             let slice = &slice[..len];
             let (result, len): (T, usize) =
-                bincode_reloaded::decode_from_slice(slice, bincode_reloaded::config::standard()).unwrap();
+                bincode_reloaded::decode_from_slice(slice, bincode_reloaded::config::standard())
+                    .unwrap();
 
             assert_eq!(start, result);
             assert_eq!(len, expected_len);

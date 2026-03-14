@@ -4,7 +4,8 @@ use std::hint::black_box;
 
 fn inline_decoder_claim_bytes_read(c: &mut Criterion) {
     let config = config::standard().with_limit::<100000>();
-    let slice = bincode_reloaded::encode_to_vec(vec![String::from("Hello world"); 1000], config).unwrap();
+    let slice =
+        bincode_reloaded::encode_to_vec(vec![String::from("Hello world"); 1000], config).unwrap();
 
     c.bench_function("inline_decoder_claim_bytes_read", |b| {
         b.iter(|| {
