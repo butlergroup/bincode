@@ -13,25 +13,7 @@
 # limitations under the License.
 #
 ################################################################################
-#!/bin/bash
-set -euxo pipefail
-
-echo "SRC=$SRC"
-pwd
-ls -la
-ls -la "$SRC"
-find "$SRC" -maxdepth 3 -type f | sort | head -200
-
-cd "$SRC"
-
-test -f Cargo.toml
-test -d fuzz
-
-cargo install cargo-fuzz --locked || true
+cd /github/workspace/storage/bincode_reloaded
 cargo fuzz build -O
-
-find fuzz/target -maxdepth 4 -type f | sort
-
-cp fuzz/target/x86_64-unknown-linux-gnu/release/compat "$OUT/" || true
-cp fuzz/target/x86_64-unknown-linux-gnu/release/roundtrip "$OUT/" || true
-ls -la "$OUT"
+cp fuzz/target/x86_64-unknown-linux-gnu/release/compat $OUT/
+cp fuzz/target/x86_64-unknown-linux-gnu/release/roundtrip $OUT/
