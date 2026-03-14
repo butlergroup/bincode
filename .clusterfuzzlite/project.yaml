@@ -1,0 +1,8 @@
+homepage: "https://github.com/butlergroup/bincode_reloaded"
+language: rust
+primary_contact: "chris.butler@butlergroup.net"
+sanitizers:
+  - address
+fuzzing_engines:
+  - libfuzzer
+main_repo: 'https://github.com/butlergroup/bincode_reloaded.git'
