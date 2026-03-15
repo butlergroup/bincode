@@ -21,9 +21,9 @@ permissions:
   contents: read
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -39,16 +39,16 @@ jobs:
       # Needed to publish results and get a badge (see publish_results below).
       id-token: write
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          5.0.x
-          6.0.x
-    - name: Run Microsoft Security DevOps
-      uses: microsoft/security-devops-action@v1.6.0
-      id: msdo
-    - name: Upload results to Security tab
-      uses: github/codeql-action/upload-sarif@v3
-      with:
-        sarif_file: ${{ steps.msdo.outputs.sarifFile }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            5.0.x
+            6.0.x
+      - name: Run Microsoft Security DevOps
+        uses: microsoft/security-devops-action@v1.6.0
+        id: msdo
+      - name: Upload results to Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.msdo.outputs.sarifFile }}
