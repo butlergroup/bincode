@@ -16,11 +16,15 @@
       "check":
         {
           "name": "Check",
-          "runs-on": "ubuntu-latest",
+          "runs-on": "${{ matrix.runner }}",
           "strategy":
             {
               "fail-fast": false,
-              "matrix": { "rust": ["stable", "beta", "nightly", "1.86.0"] },
+              "matrix":
+                {
+                  "runner": ["ubuntu-latest", "windows-latest", "macos-latest"],
+                  "rust": ["stable", "beta", "nightly", "1.86.0"],
+                },
             },
           "steps":
             [
@@ -60,7 +64,7 @@
               "matrix":
                 {
                   "runner": ["ubuntu-latest", "windows-latest", "macos-latest"],
-                  "rust": ["stable", "1.86.0"],
+                  "rust": ["stable", "beta", "nightly", "1.86.0"],
                   "features":
                     [
                       "",
@@ -97,40 +101,6 @@
                   else\n
                   cargo test --no-default-features --features ${{ matrix.features }}\n
                   fi", "name": "Run `cargo test` on all features", "shell": "bash", "env": { "RUSTFLAGS": "-D warnings" } },
-            ],
-        },
-      "lints":
-        {
-          "name": "Lints",
-          "runs-on": "ubuntu-latest",
-          "steps":
-            [
-              { "uses": "actions/checkout@v6", "name": "Checkout" },
-              {
-                "uses": "actions-rs/toolchain@v1",
-                "with":
-                  {
-                    "profile": "minimal",
-                    "toolchain": "1.86.0",
-                    "override": true,
-                    "components": "rustfmt, clippy",
-                  },
-                "name": "Install Rust stable",
-              },
-              {
-                "uses": "actions-rs/cargo@v1",
-                "with": { "command": "fmt", "args": "--all -- --check" },
-                "name": "Run `cargo fmt`",
-              },
-              {
-                "uses": "actions-rs/cargo@v1",
-                "with":
-                  {
-                    "command": "clippy",
-                    "args": "--all-features -- -D warnings",
-                  },
-                "name": "Run `cargo clippy`",
-              },
             ],
         },
       "compatibility":
