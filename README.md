@@ -12,6 +12,7 @@
 [![miri](https://github.com/butlergroup/bincode_reloaded/actions/workflows/miri.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/miri.yml)
 [![rust-clippy analyze](https://github.com/butlergroup/bincode_reloaded/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/rust-clippy.yml)
 [![Security audit](https://github.com/butlergroup/bincode_reloaded/actions/workflows/security.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/security.yml)
+[![OSV-Scanner](https://github.com/butlergroup/bincode_reloaded/actions/workflows/osv-scanner.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/osv-scanner.yml)
 [![Snyk Security-Monitored](https://img.shields.io/badge/Snyk%20Security-Monitored-purple)](https://app.snyk.io/share/784f6fef-6aaf-47ed-81ba-99e05b854665)
 [![dependency status](https://deps.rs/repo/github/butlergroup/bincode_reloaded/status.svg)](https://deps.rs/repo/github/butlergroup/bincode_reloaded)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12165/badge)](https://www.bestpractices.dev/projects/12165)
