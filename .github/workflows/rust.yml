@@ -175,5 +175,18 @@
               },
             ],
         },
+      "outdated":
+        {
+          "runs-on": "ubuntu-latest",
+          "if": "github.event_name != 'pull_request'",
+          "timeout-minutes": 45,
+          "steps":
+            [
+              { "uses": "actions/checkout@v4" },
+              { "uses": "dtolnay/rust-toolchain@stable" },
+              { "uses": "dtolnay/install@cargo-outdated" },
+              { "run": "cargo outdated --workspace --exit-code 1" },
+            ],
+        },
     },
 }

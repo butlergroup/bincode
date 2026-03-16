@@ -2,8 +2,8 @@
 
 <img align="right" src="./logo.svg" />
 
-<!-- [![](https://img.shields.io/crates/v/bincode_reloaded.svg)](https://crates.io/crates/bincode_reloaded) -->
-<!-- [![](https://img.shields.io/badge/bincode_reloaded-rustc_1.41.1+-lightgray.svg)](https://blog.rust-lang.org/2020/02/27/Rust-1.41.1.html) -->
+[<img alt="crates.io" src="https://img.shields.io/crates/v/bincode_reloaded.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/bincode_reloaded)
+[<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-bincode_reloaded-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/bincode_reloaded)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![CodeQL](https://github.com/butlergroup/bincode_reloaded/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/github-code-scanning/codeql)
 [![Rust CI/Unit Tests](https://github.com/butlergroup/bincode_reloaded/workflows/CI/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions)

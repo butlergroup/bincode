@@ -22,7 +22,7 @@ categories = ["encoding", "network-programming"]
 keywords = ["binary", "encode", "decode", "serialize", "deserialize"]
 
 license = "MIT"
-description = "A binary serialization / deserialization strategy for transforming structs into bytes and vice versa!"
+description = "A binary serialization / deserialization strategy for transforming structs into bytes and vice versa! Maintained, drop-in replacement for bincode."
 
 edition = "2024"
 
