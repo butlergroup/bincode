@@ -21,15 +21,21 @@ on:
   push:
     branches: [ "main" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   # Read commit contents
   contents: read
+  actions: read
 
 jobs:
   scan-scheduled:
     permissions:
       # Read commit contents
       contents: read
+      actions: read
       # Needed to upload the results to code-scanning dashboard.
       security-events: write
     if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
@@ -44,6 +50,7 @@ jobs:
     permissions:
       # Read commit contents
       contents: read
+      actions: read
       # Needed to upload the results to code-scanning dashboard.
       security-events: write
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
