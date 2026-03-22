@@ -7,6 +7,7 @@
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![CodeQL](https://github.com/butlergroup/bincode_reloaded/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/github-code-scanning/codeql)
 [![Rust CI/Unit Tests](https://github.com/butlergroup/bincode_reloaded/workflows/CI/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions)
+[![Dependabot Updates](https://github.com/butlergroup/bincode_reloaded/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/dependabot/dependabot-updates)
 [![CIFuzz](https://github.com/butlergroup/bincode_reloaded/actions/workflows/cifuzz.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/cifuzz.yml)
 [![Cross platform tests](https://github.com/butlergroup/bincode_reloaded/actions/workflows/cross_platform.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/cross_platform.yml)
 [![miri](https://github.com/butlergroup/bincode_reloaded/actions/workflows/miri.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/miri.yml)
