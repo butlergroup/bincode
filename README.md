@@ -35,10 +35,11 @@ and the [flate2-rs](https://github.com/rust-lang/flate2-rs) compression
 library.
 
 ## Notes on this fork
+ - dependencies in all Cargo.toml files updated to latest without build/unit test errors
  - originally forked from bincode 2.0.1
  - several security scanners have been added to the repo to ensure any issues are found quickly
- - MSRV (minimum supported Rust version) updated from 1.85 to 1.86 (without build/unit test errors)
- - Rust edition updated from 2021 to 2024 (without build/unit test errors)
+ - MSRV (minimum supported Rust version) updated from 1.85 to 1.86 without build/unit test errors
+ - Rust edition updated from 2021 to 2024 without build/unit test errors
  - minor code optimizations to improve efficiency
  - will be maintained (depenencies/crates updated & CVEs addressed in a timely manner, etc.)
 
