@@ -4,7 +4,8 @@
 
 
 #### Improvements
-
+- bump rand from 0.10.0 to 0.10.1 
+- bump uuid from 1.22.0 to 1.23.0
 
 #### Fixes
 
