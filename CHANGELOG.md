@@ -1,4 +1,17 @@
-## Version 3.1.2
+## Version 3.1.3 
+
+#### New Features
+
+
+#### Improvements
+
+
+#### Fixes
+
+
+---
+
+## Version 3.1.2 (04-13-2026)
 
 #### New Features
 

@@ -1,7 +1,7 @@
 {
   "name": "CIFuzz",
   "permissions": { contents: read },
-  "on": ["push"],
+  "on": [ "push" ],
   "concurrency":
     {
       "group": "${{ github.workflow }}-${{ github.ref }}",
@@ -15,22 +15,22 @@
           "steps":
             [
               {
-                "name": "Build Fuzzers",
-                "id": "build",
-                "uses": "google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master",
-                "with": { "language": "rust" },
-              },
+                  "name": "Build Fuzzers",
+                  "id": "build",
+                  "uses": "google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master",
+                  "with": { "language": "rust" },
+                },
               {
-                "name": "Run Fuzzers",
-                "uses": "google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master",
-                "with": { "fuzz-seconds": 300, "language": "rust" },
-              },
+                  "name": "Run Fuzzers",
+                  "uses": "google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master",
+                  "with": { "fuzz-seconds": 300, "language": "rust" },
+                },
               {
-                "name": "Upload Crash",
-                "uses": "actions/upload-artifact@v7",
-                "if": "failure() && steps.build.outcome == 'success'",
-                "with": { "name": "artifacts", "path": "./out/artifacts" },
-              },
+                  "name": "Upload Crash",
+                  "uses": "actions/upload-artifact@v7",
+                  "if": "failure() && steps.build.outcome == 'success'",
+                  "with": { "name": "artifacts", "path": "./out/artifacts" },
+                },
             ],
         },
     },

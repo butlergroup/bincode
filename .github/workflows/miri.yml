@@ -3,8 +3,8 @@
   "permissions": { contents: read },
   "on":
     {
-      "push": { "branches": ["main"] },
-      "pull_request": { "branches": ["main"] },
+      "push": { "branches": [ "main" ] },
+      "pull_request": { "branches": [ "main" ] },
     },
   "concurrency":
     {
@@ -20,9 +20,14 @@
           "steps":
             [
               { "uses": "actions/checkout@v6", "name": "Checkout" },
-              { "run": "rustup toolchain install nightly --component miri \n
-                  rustup override set nightly \n
-                  cargo miri setup", "name": "Install Rust nightly" },
+              {
+                  "run": "rustup toolchain install nightly --component miri\ 
+
+                    \ rustup override set nightly\ 
+
+                    \ cargo miri setup",
+                  "name": "Install Rust nightly",
+                },
               { "run": "cargo miri test", "name": "Default features" },
             ],
         },
