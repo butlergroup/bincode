@@ -4,7 +4,7 @@
 
 
 #### Improvements
-
+- bump uuid from 1.23.0 to 1.23.1
 
 #### Fixes
 
