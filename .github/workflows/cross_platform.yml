@@ -148,14 +148,14 @@
             },
           "steps":
             [
-              { "uses": "actions/checkout@v6", "name": "Checkout" },
+              { "uses": "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               {
-                  "uses": "actions-rs/toolchain@v1",
+                  "uses": "actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
                   "with": { "profile": "minimal", "toolchain": "stable", "override": true },
                   "name": "Install Rust stable",
                 },
               {
-                  "uses": "actions-rs/install@v0.1",
+                  "uses": "actions-rs/install@9da1d2adcfe5e7c16992e8242ca33a56b6d9b101 # v0.1.2
                   "with": { "crate": "cross" },
                   "name": "Install cargo cross",
                 },
@@ -211,7 +211,7 @@
 #       "name": "Checkout"
 #     },
 #     {
-#       "uses": "actions-rs/toolchain@v1",
+#       "uses": "actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
 #       "with": {
 #         "profile": "minimal",
 #         "toolchain": "stable",
@@ -220,7 +220,7 @@
 #       "name": "Install Rust stable"
 #     },
 #     {
-#       "uses": "actions-rs/install@v0.1",
+#       "uses": "actions-rs/install@9da1d2adcfe5e7c16992e8242ca33a56b6d9b101 # v0.1.2
 #       "with": {
 #         "crate": "cross"
 #       },
