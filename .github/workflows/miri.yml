@@ -3,33 +3,23 @@
   "permissions": { contents: read },
   "on":
     {
-      "push": { "branches": [ "main" ] },
-      "pull_request": { "branches": [ "main" ] },
+      "push": { "branches": ["main"] },
+      "pull_request": { "branches": ["main"] },
     },
   "concurrency":
     {
       "group": "${{ github.workflow }}-${{ github.ref }}",
       "cancel-in-progress": true,
     },
-  "jobs":
-    {
-      "miri":
-        {
-          "name": "Miri",
-          "runs-on": "ubuntu-latest",
-          "steps":
-            [
-              { "uses": "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+  "jobs": { "miri": { "name": "Miri", "runs-on": "ubuntu-latest", "steps": [
               {
-                  "run": "rustup toolchain install nightly --component miri\ 
+                "uses": "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd", # v6.0.2
+                { "run": "rustup toolchain install nightly --component miri\
 
-                    \ rustup override set nightly\ 
+                    \ rustup override set nightly\
 
-                    \ cargo miri setup",
-                  "name": "Install Rust nightly",
-                },
-              { "run": "cargo miri test", "name": "Default features" },
-            ],
-        },
-    },
+                    \ cargo miri setup", "name": "Install Rust nightly" },
+                { "run": "cargo miri test", "name": "Default features" },
+              },
+            ] } },
 }
