@@ -1,202 +1,201 @@
-{
-  "name": "CI",
-  "permissions": { contents: read },
-  "on":
-    {
-      "push": { "branches": ["main"] },
-      "pull_request": { "branches": ["main"] },
-    },
-  "concurrency":
-    {
-      "group": "${{ github.workflow }}-${{ github.ref }}",
-      "cancel-in-progress": true,
-    },
-  "jobs":
-    {
-      "check":
-        {
-          "name": "Check",
-          "runs-on": "${{ matrix.runner }}",
-          "strategy":
-            {
-              "fail-fast": false,
-              "matrix":
-                {
-                  "runner": ["ubuntu-latest", "windows-latest", "macos-latest"],
-                  "rust": ["stable", "beta", "nightly", "1.86.0"],
-                },
-            },
-          "steps": [
-              {
-                "uses": "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd", # v6.0.2
-                {
-                  "uses": "actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af", # v1.0.7
-                  "with":
-                    {
-                      "profile": "minimal",
-                      "toolchain": "${{ matrix.rust }}",
-                      "override": true,
-                    },
-                  "name": "Install Rust ${{ matrix.rust }}",
-                },
-                {
-                  "uses": "actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505", # v1.0.3
-                  "with": { "command": "check", "args": "--all-features" },
-                  "name": "Run `cargo check`",
-                },
-                {
-                  "uses": "actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505", # v1.0.3
-                  "with": { "command": "check", "args": "--bench *" },
-                  "name": "Run `cargo check` on benches",
-                },
-                {
-                  "uses": "actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505", # v1.0.3
-                  "with": { "command": "check", "args": "--examples" },
-                  "name": "Check examples",
-                },
-              },
-            ],
-        },
-      "test":
-        {
-          "name": "Test",
-          "strategy":
-            {
-              "matrix":
-                {
-                  "runner": ["ubuntu-latest", "windows-latest", "macos-latest"],
-                  "rust": ["stable", "beta", "nightly", "1.86.0"],
-                  "features":
-                    [
-                      "",
-                      "alloc",
-                      "alloc,derive",
-                      "std",
-                      "std,derive",
-                      "serde",
-                      "alloc,serde",
-                      "std,serde",
-                      "serde,derive",
-                      "alloc,serde,derive",
-                      "std,serde,derive",
-                    ],
-                },
-            },
-          "runs-on": "${{ matrix.runner }}",
-          "steps": [
-              {
-                "uses": "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd", # v6.0.2
-                {
-                  "uses": "actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af", # v1.0.7
-                  "with":
-                    {
-                      "profile": "minimal",
-                      "toolchain": "${{ matrix.rust }}",
-                      "override": true,
-                    },
-                  "name": "Install Rust ${{ matrix.rust }}",
-                },
-                { "run": "if [ -z \"${{ matrix.features }}\" ]
+name: CI
 
-                    \ then
+permissions:
+  contents: read
 
-                    \ cargo test --no-default-features
+on:
+  push:
+    branches:
+      - main
 
-                    \ else
+  pull_request:
+    branches:
+      - main
 
-                    \ cargo test --no-default-features --features ${{
-                    matrix.features }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-                    \ fi", "name": "Run `cargo test` on all features", "shell": "bash", "env": { "RUSTFLAGS": "-D warnings" } },
-              },
-            ],
-        },
-      "compatibility":
-        { "name": "Compatibility", "runs-on": "ubuntu-latest", "steps": [
-              {
-                "uses": "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd", # v6.0.2
-                {
-                  "uses": "actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af", # v1.0.7
-                  "with":
-                    {
-                      "profile": "minimal",
-                      "toolchain": "1.86.0",
-                      "override": true,
-                    },
-                  "name": "Install Rust stable",
-                },
-                {
-                  "uses": "actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505", # v1.0.3
-                  "with":
-                    {
-                      "command": "test",
-                      "args": "--manifest-path compatibility/Cargo.toml",
-                    },
-                  "name": "Run compatibility tests",
-                },
-              },
-            ] },
-      "coverage":
-        {
-          "runs-on": "ubuntu-latest",
-          "env":
-            {
-              "RUSTFLAGS": "-Cinstrument-coverage -Clink-dead-code -Coverflow-checks=off",
-              "LLVM_PROFILE_FILE": "coverage/%p-%m.profraw",
-            },
-          "steps": [
-              {
-                "uses": "actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5", # v4.3.1
-                {
-                  "name": "Set up Rust with coverage tools",
-                  "uses": "actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af", # v1.0.7
-                  "with":
-                    {
-                      "toolchain": "stable",
-                      "override": true,
-                      "components": "llvm-tools-preview",
-                    },
-                },
-                { "name": "Install grcov", "run": "curl -LsSf
-                    https://github.com/mozilla/grcov/releases/download/v0.8.19/gr\
-                    cov-x86_64-unknown-linux-gnu.tar.bz2 | tar xj
+jobs:
+  check:
+    name: Check
 
-                    sudo mv grcov /usr/local/bin/" },
-                { "name": "Run tests with coverage", "run": "cargo clean
+    runs-on: ${{ matrix.runner }}
 
-                    cargo build --tests
+    strategy:
+      fail-fast: false
 
-                    cargo test" },
-                { "name": "Generate coverage report", "run": "mkdir -p coverage
+      matrix:
+        runner:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
 
-                    grcov . \\
+        rust:
+          - stable
+          - beta
+          - nightly
+          - 1.86.0
 
-                    \  --binary-path ./target/debug/ \\
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-                    \  --source-dir . \\
+      - name: Install Rust ${{ matrix.rust }}
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          override: true
 
-                    \  --output-type lcov \\
+      - name: Run cargo check
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
+        with:
+          command: check
+          args: --all-features
 
-                    \  --branch \\
+      - name: Run cargo check on benches
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
+        with:
+          command: check
+          args: --benches
 
-                    \  --ignore-not-existing \\
+      - name: Check examples
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
+        with:
+          command: check
+          args: --examples
 
-                    \  --ignore \"/*/.cargo/**\" \\
+  test:
+    name: Test
 
-                    \  --ignore \"target/**\" \\
+    runs-on: ${{ matrix.runner }}
 
-                    \  --output-path coverage/lcov.info" },
-                {
-                  "name": "Coveralls GitHub Action",
-                  "uses": "coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b", # v2.3.6
-                  "env":
-                    {
-                      "COVERALLS_REPO_TOKEN": "${{ secrets.COVERALLS_REPO_TOKEN }}",
-                    },
-                  "with": { "path-to-lcov": "coverage/lcov.info" },
-                },
-              },
-            ],
-        },
-    },
-}
+    strategy:
+      fail-fast: false
+
+      matrix:
+        runner:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+        rust:
+          - stable
+          - beta
+          - nightly
+          - 1.86.0
+
+        features:
+          - ""
+          - alloc
+          - alloc,derive
+          - std
+          - std,derive
+          - serde
+          - alloc,serde
+          - std,serde
+          - serde,derive
+          - alloc,serde,derive
+          - std,serde,derive
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install Rust ${{ matrix.rust }}
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          override: true
+
+      - name: Run cargo test on feature set
+        shell: bash
+        env:
+          RUSTFLAGS: "-D warnings"
+        run: |
+          if [ -z "${{ matrix.features }}" ]; then
+            cargo test --no-default-features
+          else
+            cargo test \
+              --no-default-features \
+              --features "${{ matrix.features }}"
+          fi
+
+  compatibility:
+    name: Compatibility
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install Rust 1.86.0
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
+        with:
+          profile: minimal
+          toolchain: 1.86.0
+          override: true
+
+      - name: Run compatibility tests
+        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
+        with:
+          command: test
+          args: --manifest-path compatibility/Cargo.toml
+
+  coverage:
+    name: Coverage
+
+    runs-on: ubuntu-latest
+
+    env:
+      RUSTFLAGS: "-Cinstrument-coverage -Clink-dead-code -Coverflow-checks=off"
+      LLVM_PROFILE_FILE: "coverage/%p-%m.profraw"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Rust with coverage tools
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
+        with:
+          toolchain: stable
+          override: true
+          components: llvm-tools-preview
+
+      - name: Install grcov
+        run: |
+          curl -LsSf \
+            https://github.com/mozilla/grcov/releases/download/v0.8.19/grcov-x86_64-unknown-linux-gnu.tar.bz2 \
+            | tar xj
+
+          sudo mv grcov /usr/local/bin/
+
+      - name: Run tests with coverage
+        run: |
+          cargo clean
+          cargo build --tests
+          cargo test
+
+      - name: Generate coverage report
+        run: |
+          mkdir -p coverage
+
+          grcov . \
+            --binary-path ./target/debug/ \
+            --source-dir . \
+            --output-type lcov \
+            --branch \
+            --ignore-not-existing \
+            --ignore "/*/.cargo/**" \
+            --ignore "target/**" \
+            --output-path coverage/lcov.info
+
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2.3.6
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        with:
+          path-to-lcov: coverage/lcov.info
