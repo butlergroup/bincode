@@ -16,7 +16,7 @@
 [![OSV-Scanner](https://github.com/butlergroup/bincode_reloaded/actions/workflows/osv-scanner.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/osv-scanner.yml)
 [![Snyk Security-Monitored](https://img.shields.io/badge/Snyk%20Security-Monitored-purple)](https://app.snyk.io/share/784f6fef-6aaf-47ed-81ba-99e05b854665)
 [![dependency status](https://deps.rs/repo/github/butlergroup/bincode_reloaded/status.svg)](https://deps.rs/repo/github/butlergroup/bincode_reloaded)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12165/badge)](https://www.bestpractices.dev/projects/12165)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12890/badge)](https://www.bestpractices.dev/projects/12890)
 [![Scorecard supply-chain security](https://github.com/butlergroup/bincode_reloaded/actions/workflows/scorecard.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/scorecard.yml)
 [![Microsoft Defender For Devops](https://github.com/butlergroup/bincode_reloaded/actions/workflows/defender-for-devops.yml/badge.svg)](https://github.com/butlergroup/bincode_reloaded/actions/workflows/defender-for-devops.yml)
 [![Coverage Status](https://coveralls.io/repos/github/butlergroup/bincode_reloaded/badge.svg?branch=main)](https://coveralls.io/github/butlergroup/bincode_reloaded?branch=main)
