@@ -41,7 +41,7 @@ unty = "0.0.5"
 [dev-dependencies]
 ouroboros = "0.18.5"
 serde_derive = "1.0.228"
-serde_json = { version = "1.0.149", default-features = false }
+serde_json = { version = "1.0.150", default-features = false }
 tempfile = "3.27.0"
 criterion = "0.8.2"
 rand = "0.10.1"
