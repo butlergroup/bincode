@@ -1,6 +1,6 @@
 [package]
 name = "bincode_reloaded_derive"
-version = "3.1.2" # remember to update bincode_reloaded
+version = "3.1.2 # remember to update html_root_url and bincode_derive x 2 (below)" # remember to update bincode_reloaded
 authors = [
     "Zoey Riordan <zoey@dos.cafe>",
     "Victor Koenders <bincode@trangar.com>",
