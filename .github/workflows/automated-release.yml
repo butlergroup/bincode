@@ -1,0 +1,183 @@
+name: Trigger Release on Dependabot updates
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    # if: |
+    #   startsWith(github.event.head_commit.message, 'Update ') || startsWith(github.event.head_commit.message, 'chore: ')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Determine next patch version
+        id: version
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
+
+          echo "Current version: $LAST_TAG"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$LAST_TAG"
+
+          PATCH=$((PATCH + 1))
+
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+
+          echo "New version: $NEW_VERSION"
+
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update Cargo.toml versions
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          FILES=(
+            "./Cargo.toml"
+            "./derive/Cargo.toml"
+          )
+
+          for file in "${FILES[@]}"
+          do
+            echo "Updating $file"
+
+            sed -Ei \
+              's/^version = ".*"/version = "'"$VERSION"'"/' \
+              "$file"
+          done
+
+      - name: Update bincode_reloaded_derive version in root Cargo.toml
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          sed -Ei \
+            's/(bincode_reloaded_derive.*version = ")[^"]+(")/\1'"$VERSION"'\2/' \
+            Cargo.toml
+
+      - name: Update CHANGELOG.md
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          DATE=$(date +%m-%d-%Y)
+
+          SAFE_COMMIT_MSG=$(printf '%s\n' "$COMMIT_MSG")
+
+          DEP=""
+          FROM_VERSION=""
+          TO_VERSION=""
+          CHANGE_TEXT=""
+
+          #
+          # Dependabot examples:
+          #
+          # chore: Bump k8s.io/api from 0.36.0 to 0.36.1
+          #
+
+          if [ -z "$DEP" ]; then
+            DEP=$(printf '%s\n' "$SAFE_COMMIT_MSG" | sed -n \
+              's/^.*Bump \(.*\) from .*$/\1/p')
+
+            FROM_VERSION=$(printf '%s\n' "$SAFE_COMMIT_MSG" | sed -n \
+              's/^.*from \(.*\) to .*$/\1/p')
+
+            TO_VERSION=$(printf '%s\n' "$SAFE_COMMIT_MSG" | sed -n \
+              's/^.*to \(.*\)$/\1/p')
+
+            if [ -n "$DEP" ]; then
+              CHANGE_TEXT="- Updated ${DEP} from ${FROM_VERSION} to ${TO_VERSION} through automated dependency management"
+            fi
+          fi
+
+          #
+          # Final fallback
+          #
+
+          if [ -z "$CHANGE_TEXT" ]; then
+            CHANGE_TEXT="- Updated dependency(s) through automated dependency management"
+          fi
+
+          echo "Detected dependency: $DEP"
+          echo "From: $FROM_VERSION"
+          echo "To: $TO_VERSION"
+
+          cat > changelog_entry.md <<EOF
+          ## bincode_reloaded Version ${VERSION} (${DATE})
+
+          #### New Features
+
+          #### Improvements
+
+          ${CHANGE_TEXT}
+
+          #### Fixes
+
+          -----
+
+          EOF
+
+          cat changelog_entry.md CHANGELOG.md > CHANGELOG.tmp
+          mv CHANGELOG.tmp CHANGELOG.md
+
+      - name: Commit version updates
+        run: |
+          git add .
+
+          git commit -m "chore(release): dependency updated. Bump project version to ${{ steps.version.outputs.version }}" || true
+
+          git push origin HEAD:main
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+
+      - name: Publish crates
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "Publishing bincode_reloaded_derive..."
+
+          cargo publish \
+            --manifest-path derive/Cargo.toml
+
+          #
+          # crates.io index propagation delay
+          #
+
+          echo "Waiting for crates.io index update..."
+          sleep 30
+
+          echo "Publishing bincode_reloaded..."
+
+          cargo publish \
+            --manifest-path Cargo.toml

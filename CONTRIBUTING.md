@@ -1,4 +1,4 @@
-# Welcome to the env_encryption_tool contributing guide!
+# Welcome to the bincode_reloaded contributing guide!
 
 Thank you for investing your time and effort into contributing to our project! Any contribution you make is most welcome :sparkles:.
 
@@ -27,15 +27,16 @@ To navigate our codebase with confidence, please see our [README](/README.md) :c
 
 #### Create a new issue
 
-Once you've cloned the repository and familiarized yourself with our software, if you have a feature request or spot a problem with a component of the code, [search to see if an issue already exists](https://github.com/butlergroup/env_encryption_tool/issues). If a related issue doesn't exist, you can open a new issue using the Issues page of this repository.
+Once you've cloned the repository and familiarized yourself with our software, if you have a feature request or spot a problem with a component of the code, [search to see if an issue already exists](https://github.com/butlergroup/bincode_reloaded/issues). If a related issue doesn't exist, you can open a new issue using the Issues page of this repository.
 
 #### Solve an issue
 
-Scan through our [existing issues](https://github.com/butlergroup/env_encryption_tool/issues) to find one that interests you. You can narrow down the search using `labels` as filters. As a general rule, we don’t assign issues to anyone. If you find an issue to work on, you are welcome to open a pull request with a fix.
+Scan through our [existing issues](https://github.com/butlergroup/bincode_reloaded/issues) to find one that interests you. You can narrow down the search using `labels` as filters. As a general rule, we don’t assign issues to anyone. If you find an issue to work on, you are welcome to open a pull request with a fix.
 
 ### Make Changes
 
 1. Fork the repository. We use forks so that you can make your changes and test them without affecting the original project until you're ready to merge them.
+
 - Using VS Code:
   - [Fork the repo](https://code.visualstudio.com/docs/sourcecontrol/github).
 
@@ -46,7 +47,7 @@ Scan through our [existing issues](https://github.com/butlergroup/env_encryption
 - Using the command line:
   - [Fork the repo](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#fork-an-example-repository).
 
-2. Clone the forked repo (branch) you created and start with your changes! 
+2. Clone the forked repo (branch) you created and start with your changes!
 
 ### Commit your update(s)
 
@@ -54,17 +55,17 @@ Commit and push your changes to your branch once you are happy with them :zap:.
 
 ### Pull Request
 
-Please reference and adhere to our [pull request template](https://github.com/butlergroup/env_encryption_tool/blob/main/.github/PULL_REQUEST_TEMPLATE.md) when filing your pull request. 
+Please reference and adhere to our [pull request template](https://github.com/butlergroup/bincode_reloaded/blob/main/.github/PULL_REQUEST_TEMPLATE.md) when filing your pull request.
 
 Once you've **thoroughly tested and debugged your changes**, create a pull request (sometimes referred to on Github as a PR) in this repo. Describe to the reviewers what changes you've made as well as the purpose of your pull request.
 
 - Don't forget to [link pull request to issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue) if you are solving one.
-- Enable the checkbox to [allow maintainer edits](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/allowing-changes-to-a-pull-request-branch-created-from-a-fork) so the branch can be updated for a merge.
-Once you submit your pull request, a team member will review your proposal. We may ask questions or request additional information.
+
+- Enable the checkbox to [allow maintainer edits](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/allowing-changes-to-a-pull-request-branch-created-from-a-fork) so the branch can be updated for a merge. Once you submit your pull request, a team member will review your proposal. We may ask questions or request additional information.
 - We may ask for changes to be made before a pull request can be merged, either using [suggested changes](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request) or pull request comments. You can apply suggested changes directly through the UI. You can make any other changes in your fork, then commit them to your branch.
 - As you update your pull request and apply changes, mark each conversation as [resolved](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/commenting-on-a-pull-request#resolving-conversations).
 - If you run into any merge issues, checkout this [git tutorial](https://github.com/skills/resolve-merge-conflicts) to help you resolve merge conflicts and other issues.
 
 ### Review & Merge
 
-After review, your pull request will either be approved (in which case congratulations on your contributions :tada::tada:! The env_encryption_tool team thanks you :sparkles:), or we'll consult with you about additional changes we believe are needed.
+After review, your pull request will either be approved (in which case congratulations on your contributions :tada::tada:! The bincode_reloaded team thanks you :sparkles:), or we'll consult with you about additional changes we believe are needed.
