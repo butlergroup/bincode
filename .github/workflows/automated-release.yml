@@ -39,7 +39,9 @@ jobs:
       - name: Determine next patch version
         id: version
         run: |
-          CURRENT=$(grep '^version =' Cargo.toml | head -n1 | sed -E 's/version = "(.*)"/\1/')
+          CURRENT=$(sed -nE \
+            's/^version = "([^"]+)".*/\1/p' \
+            Cargo.toml | head -n1)
 
           echo "Current version: $CURRENT"
 
@@ -51,7 +53,7 @@ jobs:
 
           echo "New version: $NEW_VERSION"
 
-          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Update Cargo.toml versions
         env:
@@ -67,7 +69,7 @@ jobs:
             echo "Updating $file"
 
             sed -Ei \
-              's/^version = ".*"/version = "'"$VERSION"'"/' \
+              's/^version = "[^"]+"/version = "'"$VERSION"'"/' \
               "$file"
           done
 
@@ -76,7 +78,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           sed -Ei \
-            's/(bincode_reloaded_derive.*version = ")[^"]+(")/\1'"$VERSION"'\2/' \
+            '/^bincode_reloaded_derive[[:space:]]*=/{s/version = "[^"]+"/version = "'"$VERSION"'"/}' \
             Cargo.toml
 
       - name: Update CHANGELOG.md
