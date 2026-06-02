@@ -1,0 +1,264 @@
+name: Validate and auto-merge bot PRs
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "*"
+
+permissions:
+  contents: read
+
+jobs:
+  dependabot:
+    name: Validate and auto-merge bot PRs
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: read
+      actions: write
+
+    if: |
+      github.event.pull_request.user.login == 'dependabot[bot]' ||
+      github.event.pull_request.user.login == 'butlergroup-automerge-token-issuer[bot]' ||
+      github.event.pull_request.user.login == 'github-actions[bot]'
+
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+
+      - name: Fetch Dependabot metadata
+        if: github.event.pull_request.user.login == 'dependabot[bot]'
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch bot PR metadata
+        id: bot-metadata
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BOT_LOGIN: ${{ github.event.pull_request.user.login }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          pr_json=$(gh api "repos/$REPO/pulls/$PR_NUMBER")
+
+          echo "bot-login=$BOT_LOGIN" >> "$GITHUB_OUTPUT"
+          echo "pr-title=$PR_TITLE" >> "$GITHUB_OUTPUT"
+          echo "pr-branch=$PR_BRANCH" >> "$GITHUB_OUTPUT"
+
+          labels=$(gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
+            --jq '[.[].name] | join(",")')
+
+          echo "labels=$labels" >> "$GITHUB_OUTPUT"
+
+          if [[ "$BOT_LOGIN" == "dependabot[bot]" ]]; then
+            echo "bot-type=dependabot" >> "$GITHUB_OUTPUT"
+          elif [[ "$BOT_LOGIN" == "github-actions[bot]" ]]; then
+            echo "bot-type=github-actions" >> "$GITHUB_OUTPUT"
+          elif [[ "$BOT_LOGIN" == "butlergroup-automerge-token-issuer[bot]" ]]; then
+            echo "bot-type=github-app" >> "$GITHUB_OUTPUT"
+          else
+            echo "bot-type=unknown" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Wait for all checks to complete successfully
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          # Timeout after 30 minutes
+          timeout_seconds=1800
+          start_time=$(date +%s)
+
+          # Checks to ignore
+          EXCLUDED_PATTERNS=(
+            "Validate and auto-merge bot PRs"
+            "Greet First-Time Contributors"
+            "code/snyk"
+          )
+
+          echo "Waiting for checks on commit: $SHA"
+
+          while true; do
+            now=$(date +%s)
+            elapsed=$((now - start_time))
+
+            if [[ $elapsed -ge $timeout_seconds ]]; then
+              echo "Timed out waiting for checks."
+              exit 1
+            fi
+
+            echo "Fetching check runs..."
+
+            checks=$(gh api \
+              "repos/$REPO/commits/$SHA/check-runs" \
+              --jq '.check_runs[] | [
+                .name,
+                .status,
+                .conclusion
+              ] | @tsv')
+
+            if [[ -z "$checks" ]]; then
+              echo "No checks registered yet..."
+              sleep 15
+              continue
+            fi
+
+            pending=0
+            failed=0
+            actionable_checks=0
+
+            while IFS=$'\t' read -r name status conclusion; do
+
+              skip=false
+
+              for pattern in "${EXCLUDED_PATTERNS[@]}"; do
+                if [[ "$name" == *"$pattern"* ]]; then
+                  echo "Skipping excluded check: $name"
+                  skip=true
+                  break
+                fi
+              done
+
+              if [[ "$skip" == true ]]; then
+                continue
+              fi
+
+              echo "Check: $name"
+              echo "  Status: $status"
+              echo "  Conclusion: $conclusion"
+
+              actionable_checks=$((actionable_checks + 1))
+
+              #
+              # Pending states
+              #
+              if [[ "$status" != "completed" ]]; then
+                pending=1
+                continue
+              fi
+
+              #
+              # Failed states
+              #
+              case "$conclusion" in
+                success|neutral|skipped)
+                  ;;
+                *)
+                  echo "Check failed: $name"
+                  failed=1
+                  ;;
+              esac
+
+            done <<< "$checks"
+
+            #
+            # Prevent accidental merges if no real checks exist
+            #
+            if [[ $actionable_checks -eq 0 ]]; then
+              echo "No actionable checks found yet..."
+              pending=1
+            fi
+
+            #
+            # Fail immediately if any check failed
+            #
+            if [[ $failed -eq 1 ]]; then
+              echo "One or more checks failed."
+              exit 1
+            fi
+
+            #
+            # Success condition
+            #
+            if [[ $pending -eq 0 ]]; then
+              echo "All checks completed successfully."
+
+              #
+              # Extra stabilization delay to avoid race conditions
+              #
+              echo "Waiting 20 seconds for GitHub state stabilization..."
+              sleep 20
+
+              break
+            fi
+
+            echo "Checks still pending..."
+            sleep 15
+          done
+
+      - name: Verify PR mergeability
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          set -euo pipefail
+
+          for i in {1..20}; do
+            state=$(gh pr view "$PR_URL" \
+              --json mergeable \
+              --jq '.mergeable')
+
+            echo "Mergeable state: $state"
+
+            if [[ "$state" == "MERGEABLE" ]]; then
+              exit 0
+            fi
+
+            if [[ "$state" == "CONFLICTING" ]]; then
+              echo "PR has merge conflicts."
+              exit 1
+            fi
+
+            sleep 10
+          done
+
+          echo "PR never became mergeable."
+          exit 1
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Merge bot PR
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr merge \
+            --merge \
+            --delete-branch \
+            "$PR_URL"
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `❌ Bot PR auto-merge failed
+
+              PR: ${context.payload.pull_request.html_url}
+
+              Workflow:
+              ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            })
