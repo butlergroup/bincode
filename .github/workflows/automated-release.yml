@@ -85,6 +85,13 @@ jobs:
             '/^bincode_reloaded_derive[[:space:]]*=/{s/version = "[^"]+"/version = "'"$VERSION"'"/}' \
             Cargo.toml
 
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+
+      - name: Update Cargo.lock
+        run: |
+          cargo generate-lockfile
+
       - name: Update CHANGELOG.md
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -157,9 +164,6 @@ jobs:
           git commit -m "chore(release): dependency updated. Bump project version to ${{ steps.version.outputs.version }}" || true
 
           git push origin HEAD:main
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
 
       - name: Publish crates
         env:
