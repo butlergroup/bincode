@@ -75,10 +75,10 @@ dependencies = [
 
 [[package]]
 name = "bincode_reloaded"
-version = "3.1.7"
+version = "3.1.8"
 dependencies = [
  "bincode",
- "bincode_reloaded_derive 3.1.7",
+ "bincode_reloaded_derive 3.1.8",
  "bumpalo",
  "chrono",
  "criterion",
@@ -114,7 +114,7 @@ dependencies = [
 
 [[package]]
 name = "bincode_reloaded_derive"
-version = "3.1.7"
+version = "3.1.8"
 dependencies = [
  "virtue",
 ]

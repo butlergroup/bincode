@@ -1,6 +1,6 @@
 [package]
 name = "bincode_reloaded_derive"
-version = "3.1.7" # remember to update bincode_reloaded
+version = "3.1.8" # remember to update bincode_reloaded
 authors = [
     "Zoey Riordan <zoey@dos.cafe>",
     "Victor Koenders <bincode@trangar.com>",
