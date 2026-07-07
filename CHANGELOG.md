@@ -1,3 +1,15 @@
+## bincode_reloaded Version 3.1.10 (07-07-2026)
+
+#### New Features
+
+#### Improvements
+
+- Updated dependency(s) through automated dependency management
+
+#### Fixes
+
+-----
+
 ## bincode_reloaded Version 3.1.9 (07-02-2026)
 
 #### New Features
