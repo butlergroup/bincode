@@ -1,4 +1,4 @@
-## bincode_reloaded Version 3.1.12 (07-14-2026)
+## bincode_reloaded Version 3.1.13 (07-16-2026)
 
 #### New Features
 
