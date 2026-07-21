@@ -10,5 +10,5 @@ description = "a crate to enable backward compatibility/tests for bincode_reload
 [dependencies]
 bincode_2 = { version = "2.0.1", package = "bincode_reloaded", features = ["serde"] }
 bincode_1 = { version = "1.3.3", package = "bincode" }
-serde = { version = "1.0.228", features = ["derive"] }
+serde = { version = "1.0.229", features = ["derive"] }
 rand = "0.10.2"

@@ -34,22 +34,22 @@ derive = ["bincode_reloaded_derive"]
 
 [dependencies]
 bincode_reloaded_derive = { path = "./derive", version = "3.1.14", optional = true }
-serde = { version = "1.0.228", default-features = false, optional = true }
+serde = { version = "1.0.229", default-features = false, optional = true }
 unty = "0.0.5"
 
 # Used for tests
 [dev-dependencies]
 ouroboros = "0.18.5"
-serde_derive = "1.0.228"
-serde_json = { version = "1.0.150", default-features = false }
+serde_derive = "1.0.229"
+serde_json = { version = "1.0.151", default-features = false }
 tempfile = "3.27.0"
 criterion = "0.8.2"
 rand = "0.10.2"
-uuid = { version = "1.23.5", features = ["serde"] }
+uuid = { version = "1.24.0", features = ["serde"] }
 chrono = { version = "0.4.45", features = ["serde"] }
 glam = { version = "0.33.2", features = ["serde"] }
 bincode_1 = { version = "1.3.3", package = "bincode" }
-serde = { version = "1.0.228", features = ["derive"] }
+serde = { version = "1.0.229", features = ["derive"] }
 bumpalo = { version = "3.20.3", features = ["collections"] }
 
 [[bench]]
