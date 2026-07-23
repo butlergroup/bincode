@@ -148,4 +148,4 @@ Have questions or suggestions? Reach out to us at dev@butlergroup.net. Thank you
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=butlergroup/bincode_reloaded&type=Date)](https://www.star-history.com/#butlergroup/bincode_reloaded&Date)
+[![Star History Chart](https://api.star-history.com/chart?repos=butlergroup/bincode_reloaded&type=date&legend=top-left&sealed_token=Cfh-tC0M8aFxFCXQi09XXJSk_Gtht8OsT1aIXNO0qxwyG7kGIqKGS9YrCYVoaN3W0lSMf1PAzwF_oWAjN0mGlycjUJ9McTxvRRElPYpytcD07ZwuL-qCrQ)](https://www.star-history.com/?type=date&repos=butlergroup%2Fbincode_reloaded)
